@@ -1,0 +1,22 @@
+{
+  "users": [
+    {
+      "username": "user",
+      "password": "user",
+      "nivel": 1,
+      "puntuacion": 0
+    },
+    {
+      "username": "Juan",
+      "password": "123",
+      "nivel": 1,
+      "puntuacion": 0
+    },
+    {
+      "username": "mary",
+      "password": "mary",
+      "nivel": 1,
+      "puntuacion": 0
+    }
+  ]
+}
