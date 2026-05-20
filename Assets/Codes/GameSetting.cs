@@ -10,7 +10,7 @@ public class GameSetting : MonoBehaviour
     public MoverRana resetear;
     public JuegoDeLaMochila resetearMochila;
     public MovimientoEnLaberinto resetearLaberinto;
-    public JuegoDeHwYSw resetearHwSw;
+    public JuegoDeQuiz resetearQuiz;
     public OrdenarBolasListas resetearOrdenar;
     public JuegoDeReinas resetearAjedrez;
     public Button btnReiniciar; // Haz estos campos públicos
@@ -57,12 +57,12 @@ public class GameSetting : MonoBehaviour
             
             SceneManager.LoadScene("AyudaLaberinto"); // Cambia a la siguiente escena
         }
-        else if (sceneName == "GameAdivinarHardwareOrSoftware")
+        else if (sceneName == "GameQuiz")
         {
             int id = 3; // Tu ID aquí
             PlayerPrefs.SetInt("ID", id); // Almacena el ID en PlayerPrefs
-            resetearHwSw.SetValor(true);
-            SceneManager.LoadScene("AyudaHwYSw"); // Cambia a la siguiente escena
+            resetearQuiz.SetValor(true);
+            SceneManager.LoadScene("AyudaQuiz"); // Cambia a la siguiente escena
         }
         else if (sceneName == "GameOrdenar")
         {
@@ -88,8 +88,8 @@ public class GameSetting : MonoBehaviour
             resetearMochila.SetValor(true);
         if(sceneName == "GameLaberinto")
             resetearLaberinto.SetValor(true);
-        if(sceneName == "GameAdivinarHardwareOrSoftware")
-            resetearHwSw.SetValor(true);
+        if(sceneName == "GameQuiz")
+            resetearQuiz.SetValor(true);
         if(sceneName == "GameOrdenar")
             resetearOrdenar.SetValor(true);
         if(sceneName == "GameAjedrez")
@@ -110,8 +110,8 @@ public class GameSetting : MonoBehaviour
             resetearMochila.SetValor(true);
         if (sceneName == "GameLaberinto")
             resetearLaberinto.SetValor(true);
-        if (sceneName == "GameAdivinarHardwareOrSoftware")
-            resetearHwSw.SetValor(true);
+        if (sceneName == "GameQuiz")
+            resetearQuiz.SetValor(true);
         if (sceneName == "GameOrdenar")
             resetearOrdenar.SetValor(true);
         if (sceneName == "GameAjedrez")

@@ -5,7 +5,7 @@ using System.Collections;
 
 public class TotalStarsCounter : MonoBehaviour
 {
-    public int puntuacionRana, puntuacionBolas, puntuacionMochila, puntuacionLaberinto, puntuacionHS, puntuacionReina, puntuacionTresEnRaya;
+    public int puntuacionRana, puntuacionBolas, puntuacionMochila, puntuacionLaberinto, puntuacionQuiz, puntuacionReina, puntuacionTresEnRaya;
     public static int totalPuntacion;
     public static TotalStarsCounter instance;
     public TextMeshProUGUI totalPointsText;
@@ -283,7 +283,7 @@ public class TotalStarsCounter : MonoBehaviour
         puntuacionBolas = user.bolasScore;
         puntuacionMochila = user.mochilaScore;
         puntuacionLaberinto = user.laberintoScore;
-        puntuacionHS = user.hardwareSoftwareScore;
+        puntuacionQuiz = user.quizScore;
         puntuacionReina = user.reinaScore;
         puntuacionTresEnRaya = user.tresEnRayaScore;
         totalPuntacion = user.puntuacion;
@@ -293,7 +293,7 @@ public class TotalStarsCounter : MonoBehaviour
         Debug.Log("  - Bolas: " + puntuacionBolas);
         Debug.Log("  - Mochila: " + puntuacionMochila);
         Debug.Log("  - Laberinto: " + puntuacionLaberinto);
-        Debug.Log("  - HS: " + puntuacionHS);
+        Debug.Log("  - Quiz: " + puntuacionQuiz);
         Debug.Log("  - Reina: " + puntuacionReina);
         Debug.Log("  - TresEnRaya: " + puntuacionTresEnRaya);
         Debug.Log("  - TOTAL: " + totalPuntacion);*/
@@ -448,13 +448,19 @@ public class TotalStarsCounter : MonoBehaviour
                 return user.mochilaScore;
             case "laberinto":
                 return user.laberintoScore;
-            case "hardwaresoftware":
-                return user.hardwareSoftwareScore;
+            case "quiz":
+                return user.quizScore;
             case "reina":
                 return user.reinaScore;
             case "tresEnraya":
             case "tresenraya":
                 return user.tresEnRayaScore;
+            case "puzzle":
+                return user.puzzleScore;
+            case "animales":
+                return user.animalesScore;
+            case "rutina":
+                return user.rutinaScore;
             default:
                 return 0;
         }
@@ -476,8 +482,8 @@ public class TotalStarsCounter : MonoBehaviour
             case "laberinto":
                 user.laberintoScore = nuevaPuntuacion;
                 break;
-            case "hardwaresoftware":
-                user.hardwareSoftwareScore = nuevaPuntuacion;
+            case "quiz":
+                user.quizScore = nuevaPuntuacion;
                 break;
             case "reina":
                 user.reinaScore = nuevaPuntuacion;
@@ -485,6 +491,15 @@ public class TotalStarsCounter : MonoBehaviour
             case "tresEnraya":
             case "tresenraya":
                 user.tresEnRayaScore = nuevaPuntuacion;
+                break;
+            case "puzzle":
+                user.puzzleScore = nuevaPuntuacion;
+                break;
+            case "animales":
+                user.animalesScore = nuevaPuntuacion;
+                break;
+            case "rutina":
+                user.rutinaScore = nuevaPuntuacion;
                 break;
         }
     }

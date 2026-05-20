@@ -36,7 +36,7 @@ EditorBuildSettings:
     path: Assets/Scenes/AyudaRana.unity
     guid: 78402ddffbaa8ed468644ec350c50cb9
   - enabled: 1
-    path: Assets/Scenes/GameAdivinarHardwareOrSoftware.unity
+    path: Assets/Scenes/GameQuiz.unity
     guid: 9dcf16b981bcbd149b20d27a320800ad
   - enabled: 1
     path: Assets/Scenes/GameAjedrez.unity

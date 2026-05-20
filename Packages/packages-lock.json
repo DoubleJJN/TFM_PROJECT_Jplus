@@ -184,7 +184,7 @@
     },
     "com.unity.collab-proxy": {
       "version": "2.10.2",
-      "depth": 0,
+      "depth": 1,
       "source": "registry",
       "dependencies": {},
       "url": "https://packages.unity.com"

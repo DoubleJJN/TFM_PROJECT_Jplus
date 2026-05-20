@@ -10,7 +10,7 @@ public class AyudaJugar : MonoBehaviour
     public MoverRana resetearRana;
     public JuegoDeLaMochila resetearMochila;
     public MovimientoEnLaberinto resetearLaberinto;
-    public JuegoDeHwYSw resetearHwSw;
+    public JuegoDeQuiz resetearQuiz;
     public OrdenarBolasListas resetearOrdenar;
     public JuegoDeReinas resetearAjedrez;
     // Start is called before the first frame update
@@ -45,12 +45,12 @@ public class AyudaJugar : MonoBehaviour
 
             SceneManager.LoadScene("AyudaLaberinto"); // Cambia a la siguiente escena
         }
-        else if (sceneName == "GameAdivinarHardwareOrSoftware")
+        else if (sceneName == "GameQuiz")
         {
             int id = 3; // Tu ID aquí
             PlayerPrefs.SetInt("ID", id); // Almacena el ID en PlayerPrefs
-            resetearHwSw.SetValor(true);
-            SceneManager.LoadScene("AyudaHwYSw"); // Cambia a la siguiente escena
+            resetearQuiz.SetValor(true);
+            SceneManager.LoadScene("AyudaQuiz"); // Cambia a la siguiente escena
         }
         else if (sceneName == "GameOrdenar")
         {

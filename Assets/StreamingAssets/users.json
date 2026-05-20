@@ -9,10 +9,12 @@
             "bolasScore": 0,
             "mochilaScore": 0,
             "laberintoScore": 0,
-            "hardwareSoftwareScore": 0,
+            "quizScore": 0,
             "reinaScore": 0,
             "tresEnRayaScore": 1,
-            "puzzleScore": 0
+            "puzzleScore": 0,
+            "animalesScore": 0,
+            "rutinaScore": 0
         },
         {
             "username": "Juan",
@@ -23,10 +25,12 @@
             "bolasScore": 0,
             "mochilaScore": 0,
             "laberintoScore": 0,
-            "hardwareSoftwareScore": 0,
+            "quizScore": 0,
             "reinaScore": 0,
             "tresEnRayaScore": 1,
-            "puzzleScore": 0
+            "puzzleScore": 0,
+            "animalesScore": 0,
+            "rutinaScore": 0
         },
         {
             "username": "mary",
@@ -37,24 +41,28 @@
             "bolasScore": 0,
             "mochilaScore": 0,
             "laberintoScore": 0,
-            "hardwareSoftwareScore": 0,
+            "quizScore": 0,
             "reinaScore": 0,
             "tresEnRayaScore": 1,
-            "puzzleScore": 0
+            "puzzleScore": 0,
+            "animalesScore": 0,
+            "rutinaScore": 0
         },
         {
             "username": "jj",
             "password": "de3bbd0fd7945e42581643b18cdf28dd3ed61d9c3d541b7b016081564b65a3f3",
             "nivel": 1,
-            "puntuacion": 20,
+            "puntuacion": 23,
             "ranasScore": 3,
             "bolasScore": 3,
             "mochilaScore": 2,
             "laberintoScore": 3,
-            "hardwareSoftwareScore": 1,
+            "quizScore": 1,
             "reinaScore": 2,
             "tresEnRayaScore": 3,
-            "puzzleScore": 3
+            "puzzleScore": 3,
+            "animalesScore": 0,
+            "rutinaScore": 3
         },
         {
             "username": "jo",
@@ -65,10 +73,12 @@
             "bolasScore": 0,
             "mochilaScore": 0,
             "laberintoScore": 0,
-            "hardwareSoftwareScore": 0,
+            "quizScore": 0,
             "reinaScore": 0,
             "tresEnRayaScore": 3,
-            "puzzleScore": 0
+            "puzzleScore": 0,
+            "animalesScore": 0,
+            "rutinaScore": 0
         },
         {
             "username": "Jiajie",
@@ -79,10 +89,12 @@
             "bolasScore": 0,
             "mochilaScore": 0,
             "laberintoScore": 0,
-            "hardwareSoftwareScore": 0,
+            "quizScore": 0,
             "reinaScore": 0,
             "tresEnRayaScore": 3,
-            "puzzleScore": 3
+            "puzzleScore": 3,
+            "animalesScore": 0,
+            "rutinaScore": 0
         },
         {
             "username": "Juanito",
@@ -93,10 +105,12 @@
             "bolasScore": 0,
             "mochilaScore": 0,
             "laberintoScore": 0,
-            "hardwareSoftwareScore": 0,
+            "quizScore": 0,
             "reinaScore": 0,
             "tresEnRayaScore": 1,
-            "puzzleScore": 0
+            "puzzleScore": 0,
+            "animalesScore": 0,
+            "rutinaScore": 0
         },
         {
             "username": "supra",
@@ -107,10 +121,12 @@
             "bolasScore": 0,
             "mochilaScore": 0,
             "laberintoScore": 0,
-            "hardwareSoftwareScore": 0,
+            "quizScore": 0,
             "reinaScore": 0,
             "tresEnRayaScore": 1,
-            "puzzleScore": 0
+            "puzzleScore": 0,
+            "animalesScore": 0,
+            "rutinaScore": 0
         },
         {
             "username": "momo",
@@ -121,10 +137,12 @@
             "bolasScore": 0,
             "mochilaScore": 1,
             "laberintoScore": 0,
-            "hardwareSoftwareScore": 0,
+            "quizScore": 0,
             "reinaScore": 0,
             "tresEnRayaScore": 2,
-            "puzzleScore": 0
+            "puzzleScore": 0,
+            "animalesScore": 0,
+            "rutinaScore": 0
         },
         {
             "username": "son",
@@ -135,10 +153,12 @@
             "bolasScore": 0,
             "mochilaScore": 0,
             "laberintoScore": 0,
-            "hardwareSoftwareScore": 0,
+            "quizScore": 0,
             "reinaScore": 0,
             "tresEnRayaScore": 3,
-            "puzzleScore": 0
+            "puzzleScore": 0,
+            "animalesScore": 0,
+            "rutinaScore": 0
         },
         {
             "username": "uw",
@@ -149,10 +169,12 @@
             "bolasScore": 0,
             "mochilaScore": 0,
             "laberintoScore": 0,
-            "hardwareSoftwareScore": 0,
+            "quizScore": 0,
             "reinaScore": 0,
             "tresEnRayaScore": 1,
-            "puzzleScore": 0
+            "puzzleScore": 0,
+            "animalesScore": 0,
+            "rutinaScore": 0
         },
         {
             "username": "omar",
@@ -163,10 +185,12 @@
             "bolasScore": 0,
             "mochilaScore": 0,
             "laberintoScore": 0,
-            "hardwareSoftwareScore": 0,
+            "quizScore": 0,
             "reinaScore": 0,
             "tresEnRayaScore": 3,
-            "puzzleScore": 0
+            "puzzleScore": 0,
+            "animalesScore": 0,
+            "rutinaScore": 0
         },
         {
             "username": "Marcos",
@@ -177,10 +201,12 @@
             "bolasScore": 0,
             "mochilaScore": 3,
             "laberintoScore": 0,
-            "hardwareSoftwareScore": 0,
+            "quizScore": 0,
             "reinaScore": 0,
             "tresEnRayaScore": 1,
-            "puzzleScore": 1
+            "puzzleScore": 1,
+            "animalesScore": 0,
+            "rutinaScore": 0
         },
         {
             "username": "super",
@@ -191,10 +217,12 @@
             "bolasScore": 0,
             "mochilaScore": 0,
             "laberintoScore": 0,
-            "hardwareSoftwareScore": 0,
+            "quizScore": 0,
             "reinaScore": 0,
             "tresEnRayaScore": 1,
-            "puzzleScore": 0
+            "puzzleScore": 0,
+            "animalesScore": 0,
+            "rutinaScore": 0
         },
         {
             "username": "SUV",
@@ -205,10 +233,12 @@
             "bolasScore": 0,
             "mochilaScore": 0,
             "laberintoScore": 0,
-            "hardwareSoftwareScore": 0,
+            "quizScore": 0,
             "reinaScore": 0,
             "tresEnRayaScore": 1,
-            "puzzleScore": 0
+            "puzzleScore": 0,
+            "animalesScore": 0,
+            "rutinaScore": 0
         },
         {
             "username": "g",
@@ -219,10 +249,12 @@
             "bolasScore": 0,
             "mochilaScore": 0,
             "laberintoScore": 0,
-            "hardwareSoftwareScore": 0,
+            "quizScore": 0,
             "reinaScore": 0,
             "tresEnRayaScore": 1,
-            "puzzleScore": 0
+            "puzzleScore": 0,
+            "animalesScore": 0,
+            "rutinaScore": 0
         },
         {
             "username": "mio",
@@ -233,10 +265,12 @@
             "bolasScore": 0,
             "mochilaScore": 0,
             "laberintoScore": 0,
-            "hardwareSoftwareScore": 0,
+            "quizScore": 0,
             "reinaScore": 0,
             "tresEnRayaScore": 1,
-            "puzzleScore": 0
+            "puzzleScore": 0,
+            "animalesScore": 0,
+            "rutinaScore": 0
         },
         {
             "username": "lala",
@@ -247,10 +281,12 @@
             "bolasScore": 0,
             "mochilaScore": 0,
             "laberintoScore": 0,
-            "hardwareSoftwareScore": 0,
+            "quizScore": 0,
             "reinaScore": 0,
             "tresEnRayaScore": 1,
-            "puzzleScore": 0
+            "puzzleScore": 0,
+            "animalesScore": 0,
+            "rutinaScore": 0
         },
         {
             "username": "me",
@@ -261,10 +297,12 @@
             "bolasScore": 3,
             "mochilaScore": 1,
             "laberintoScore": 2,
-            "hardwareSoftwareScore": 3,
+            "quizScore": 3,
             "reinaScore": 3,
             "tresEnRayaScore": 3,
-            "puzzleScore": 0
+            "puzzleScore": 0,
+            "animalesScore": 0,
+            "rutinaScore": 0
         },
         {
             "username": "moluxo",
@@ -275,10 +313,12 @@
             "bolasScore": 2,
             "mochilaScore": 0,
             "laberintoScore": 0,
-            "hardwareSoftwareScore": 0,
+            "quizScore": 0,
             "reinaScore": 0,
             "tresEnRayaScore": 2,
-            "puzzleScore": 0
+            "puzzleScore": 0,
+            "animalesScore": 0,
+            "rutinaScore": 0
         },
         {
             "username": "DoubleJ",
@@ -289,10 +329,12 @@
             "bolasScore": 0,
             "mochilaScore": 1,
             "laberintoScore": 3,
-            "hardwareSoftwareScore": 0,
+            "quizScore": 0,
             "reinaScore": 0,
             "tresEnRayaScore": 3,
-            "puzzleScore": 0
+            "puzzleScore": 0,
+            "animalesScore": 0,
+            "rutinaScore": 0
         },
         {
             "username": "supermoluxo",
@@ -303,10 +345,12 @@
             "bolasScore": 0,
             "mochilaScore": 0,
             "laberintoScore": 0,
-            "hardwareSoftwareScore": 0,
+            "quizScore": 0,
             "reinaScore": 0,
             "tresEnRayaScore": 3,
-            "puzzleScore": 0
+            "puzzleScore": 0,
+            "animalesScore": 0,
+            "rutinaScore": 0
         },
         {
             "username": "dani",
@@ -317,10 +361,12 @@
             "bolasScore": 0,
             "mochilaScore": 2,
             "laberintoScore": 0,
-            "hardwareSoftwareScore": 0,
+            "quizScore": 0,
             "reinaScore": 0,
             "tresEnRayaScore": 3,
-            "puzzleScore": 0
+            "puzzleScore": 0,
+            "animalesScore": 0,
+            "rutinaScore": 0
         },
         {
             "username": "swim",
@@ -331,10 +377,12 @@
             "bolasScore": 0,
             "mochilaScore": 0,
             "laberintoScore": 0,
-            "hardwareSoftwareScore": 0,
+            "quizScore": 0,
             "reinaScore": 0,
             "tresEnRayaScore": 0,
-            "puzzleScore": 0
+            "puzzleScore": 0,
+            "animalesScore": 0,
+            "rutinaScore": 0
         },
         {
             "username": "Anabel",
@@ -345,10 +393,12 @@
             "bolasScore": 0,
             "mochilaScore": 0,
             "laberintoScore": 0,
-            "hardwareSoftwareScore": 0,
+            "quizScore": 0,
             "reinaScore": 0,
             "tresEnRayaScore": 0,
-            "puzzleScore": 0
+            "puzzleScore": 0,
+            "animalesScore": 0,
+            "rutinaScore": 0
         },
         {
             "username": "m",
@@ -359,10 +409,28 @@
             "bolasScore": 0,
             "mochilaScore": 0,
             "laberintoScore": 0,
-            "hardwareSoftwareScore": 0,
+            "quizScore": 0,
             "reinaScore": 0,
             "tresEnRayaScore": 0,
-            "puzzleScore": 0
+            "puzzleScore": 0,
+            "animalesScore": 0,
+            "rutinaScore": 0
+        },
+        {
+            "username": "j",
+            "password": "189f40034be7a199f1fa9891668ee3ab6049f82d38c68be70f596eab2e1857b7",
+            "nivel": 1,
+            "puntuacion": 4,
+            "ranasScore": 0,
+            "bolasScore": 0,
+            "mochilaScore": 0,
+            "laberintoScore": 0,
+            "quizScore": 0,
+            "reinaScore": 0,
+            "tresEnRayaScore": 0,
+            "puzzleScore": 0,
+            "animalesScore": 1,
+            "rutinaScore": 3
         }
     ]
 }

@@ -11,14 +11,16 @@ public class User
     public int bolasScore = 0;
     public int mochilaScore = 0;
     public int laberintoScore = 0;
-    public int hardwareSoftwareScore = 0;
+    public int quizScore = 0;
     public int reinaScore = 0;
     public int tresEnRayaScore = 0;
     public int puzzleScore = 0;
+    public int animalesScore = 0;
+    public int rutinaScore = 0;
     
     // Calcula el total sumando los máximos de cada juego
     public int GetTotalScore()
     {
-        return ranasScore + bolasScore + mochilaScore + laberintoScore + hardwareSoftwareScore + reinaScore + tresEnRayaScore + puzzleScore;
+        return ranasScore + bolasScore + mochilaScore + laberintoScore + quizScore + reinaScore + tresEnRayaScore + puzzleScore + animalesScore + rutinaScore;
     }
 }

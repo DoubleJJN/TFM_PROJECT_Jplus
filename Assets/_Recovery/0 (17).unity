@@ -2174,7 +2174,7 @@ MonoBehaviour:
   puntuacionBolas: 0
   puntuacionMochila: 0
   puntuacionLaberinto: 0
-  puntuacionHS: 0
+  puntuacionQuiz: 0
   puntuacionReina: 0
   puntuacionTresEnRaya: 0
   totalPointsText: {fileID: 1120340975}

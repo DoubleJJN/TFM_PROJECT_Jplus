@@ -33,7 +33,7 @@ public class AyudasJuegos : MonoBehaviour
         }
         else if (id == 3)
         {
-            SceneManager.LoadScene("GameAdivinarHardwareOrSoftware");
+            SceneManager.LoadScene("GameQuiz");
         }
         else if (id == 4)
         {

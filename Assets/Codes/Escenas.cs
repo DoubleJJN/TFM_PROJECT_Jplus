@@ -180,7 +180,7 @@ public class Escenas : MonoBehaviour
         ActualizarEstrellas(b3.transform, usuarioActual.laberintoScore);
         
         // Botón 4 - Hardware/Software
-        ActualizarEstrellas(b4.transform, usuarioActual.hardwareSoftwareScore);
+        ActualizarEstrellas(b4.transform, usuarioActual.quizScore);
         
         // Botón 5 - Bolas
         ActualizarEstrellas(b5.transform, usuarioActual.bolasScore);
@@ -193,6 +193,12 @@ public class Escenas : MonoBehaviour
 
         // Botón 8 - Puzzle
         ActualizarEstrellas(b8.transform, usuarioActual.puzzleScore);
+
+        // Botón 9 - Animales
+        ActualizarEstrellas(b9.transform, usuarioActual.animalesScore);
+
+        // Botón 10 - Rutina
+        ActualizarEstrellas(b10.transform, usuarioActual.rutinaScore);
     }
     
     private void ActualizarEstrellas(Transform buttonTransform, int puntuacion)
@@ -259,7 +265,7 @@ public class Escenas : MonoBehaviour
 
     void Button4()
     {
-        IntentarCargarEscena("GameAdivinarHardwareOrSoftware");
+        IntentarCargarEscena("GameQuiz");
     }
 
     void Button5()

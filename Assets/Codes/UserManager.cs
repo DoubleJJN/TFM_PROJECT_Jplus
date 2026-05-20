@@ -137,7 +137,7 @@ public class UserManager : MonoBehaviour
                                     memoryUser.bolasScore = savedUser.bolasScore;
                                     memoryUser.mochilaScore = savedUser.mochilaScore;
                                     memoryUser.laberintoScore = savedUser.laberintoScore;
-                                    memoryUser.hardwareSoftwareScore = savedUser.hardwareSoftwareScore;
+                                    memoryUser.quizScore = savedUser.quizScore;
                                     memoryUser.reinaScore = savedUser.reinaScore;
                                     break;
                                 }
@@ -194,7 +194,7 @@ public class UserManager : MonoBehaviour
             newUser.bolasScore = 0;
             newUser.mochilaScore = 0;
             newUser.laberintoScore = 0;
-            newUser.hardwareSoftwareScore = 0;
+            newUser.quizScore = 0;
             newUser.reinaScore = 0;
 
             database.users.Add(newUser);
@@ -354,7 +354,7 @@ public class UserManager : MonoBehaviour
     {
         // Asegurar que el usuario tenga todos los campos
         if (user.ranasScore == 0 && user.bolasScore == 0 && user.mochilaScore == 0 &&
-            user.laberintoScore == 0 && user.hardwareSoftwareScore == 0 && user.reinaScore == 0)
+            user.laberintoScore == 0 && user.quizScore == 0 && user.reinaScore == 0)
         {
             // OK, están inicializados
         }
@@ -428,7 +428,7 @@ public class UserManager : MonoBehaviour
         newUser.bolasScore = 0;
         newUser.mochilaScore = 0;
         newUser.laberintoScore = 0;
-        newUser.hardwareSoftwareScore = 0;
+        newUser.quizScore = 0;
         newUser.reinaScore = 0;
 
         string jsonData = JsonUtility.ToJson(newUser, false);
@@ -734,14 +734,18 @@ public class UserManager : MonoBehaviour
                 return user.mochilaScore;
             case "laberinto":
                 return user.laberintoScore;
-            case "hardwaresoftware":
-                return user.hardwareSoftwareScore;
+            case "quiz":
+                return user.quizScore;
             case "reina":
                 return user.reinaScore;
             case "tresenraya":
                 return user.tresEnRayaScore;
             case "puzzle":
                 return user.puzzleScore;
+            case "animales":
+                return user.animalesScore;
+            case "rutina":
+                return user.rutinaScore;
             default:
                 return 0;
         }
@@ -763,8 +767,8 @@ public class UserManager : MonoBehaviour
             case "laberinto":
                 user.laberintoScore = nuevaPuntuacion;
                 break;
-            case "hardwaresoftware":
-                user.hardwareSoftwareScore = nuevaPuntuacion;
+            case "quiz":
+                user.quizScore = nuevaPuntuacion;
                 break;
             case "reina":
                 user.reinaScore = nuevaPuntuacion;
@@ -774,6 +778,12 @@ public class UserManager : MonoBehaviour
                 break;
             case "puzzle":
                 user.puzzleScore = nuevaPuntuacion;
+                break;
+            case "animales":
+                user.animalesScore = nuevaPuntuacion;
+                break;
+            case "rutina":
+                user.rutinaScore = nuevaPuntuacion;
                 break;
         }
     }

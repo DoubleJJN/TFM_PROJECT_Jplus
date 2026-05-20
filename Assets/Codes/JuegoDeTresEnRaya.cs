@@ -707,7 +707,7 @@ public class JuegoDeTresEnRaya : MonoBehaviour
                     database.users[i].bolasScore = usuarioActualObj.bolasScore;
                     database.users[i].mochilaScore = usuarioActualObj.mochilaScore;
                     database.users[i].laberintoScore = usuarioActualObj.laberintoScore;
-                    database.users[i].hardwareSoftwareScore = usuarioActualObj.hardwareSoftwareScore;
+                    database.users[i].quizScore = usuarioActualObj.quizScore;
                     database.users[i].reinaScore = usuarioActualObj.reinaScore;
                     
                     usuariosActualizados++;
@@ -721,7 +721,7 @@ public class JuegoDeTresEnRaya : MonoBehaviour
                     database.users[i].bolasScore = usuarioRivalObj.bolasScore;
                     database.users[i].mochilaScore = usuarioRivalObj.mochilaScore;
                     database.users[i].laberintoScore = usuarioRivalObj.laberintoScore;
-                    database.users[i].hardwareSoftwareScore = usuarioRivalObj.hardwareSoftwareScore;
+                    database.users[i].quizScore = usuarioRivalObj.quizScore;
                     database.users[i].reinaScore = usuarioRivalObj.reinaScore;
                     
                     usuariosActualizados++;
@@ -791,9 +791,12 @@ public class JuegoDeTresEnRaya : MonoBehaviour
             bolasScore = usuarioActualObj.bolasScore,
             mochilaScore = usuarioActualObj.mochilaScore,
             laberintoScore = usuarioActualObj.laberintoScore,
-            hardwareSoftwareScore = usuarioActualObj.hardwareSoftwareScore,
+            quizScore = usuarioActualObj.quizScore,
             reinaScore = usuarioActualObj.reinaScore,
-            tresEnRayaScore = usuarioActualObj.tresEnRayaScore
+            tresEnRayaScore = usuarioActualObj.tresEnRayaScore,
+            puzzleScore = usuarioActualObj.puzzleScore,
+            animalesScore = usuarioActualObj.animalesScore,
+            rutinaScore = usuarioActualObj.rutinaScore
         });
         
         StartCoroutine(EnviarScoresAlServidor(usuarioActual, postData));
@@ -810,9 +813,12 @@ public class JuegoDeTresEnRaya : MonoBehaviour
                 bolasScore = usuarioRivalObj.bolasScore,
                 mochilaScore = usuarioRivalObj.mochilaScore,
                 laberintoScore = usuarioRivalObj.laberintoScore,
-                hardwareSoftwareScore = usuarioRivalObj.hardwareSoftwareScore,
+                quizScore = usuarioRivalObj.quizScore,
                 reinaScore = usuarioRivalObj.reinaScore,
-                tresEnRayaScore = usuarioRivalObj.tresEnRayaScore
+                tresEnRayaScore = usuarioRivalObj.tresEnRayaScore,
+                puzzleScore = usuarioRivalObj.puzzleScore,
+                animalesScore = usuarioRivalObj.animalesScore,
+                rutinaScore = usuarioRivalObj.rutinaScore
             });
             
             StartCoroutine(EnviarScoresAlServidor(usuarioRival, postDataRival));
@@ -905,8 +911,11 @@ public class JuegoDeTresEnRaya : MonoBehaviour
         public int bolasScore;
         public int mochilaScore;
         public int laberintoScore;
-        public int hardwareSoftwareScore;
+        public int quizScore;
         public int reinaScore;
         public int tresEnRayaScore;
+        public int puzzleScore;
+        public int animalesScore;
+        public int rutinaScore;
     }
 }

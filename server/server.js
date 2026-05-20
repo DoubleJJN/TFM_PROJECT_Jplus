@@ -82,9 +82,12 @@ app.post('/api/register', (req, res) => {
         bolasScore: 0,
         mochilaScore: 0,
         laberintoScore: 0,
-        hardwareSoftwareScore: 0,
+        quizScore: 0,
         reinaScore: 0,
-        tresEnRayaScore: 0
+        tresEnRayaScore: 0,
+        puzzleScore: 0,
+        animalesScore: 0,
+        rutinaScore: 0
     };
 
     database.users.push(newUser);
@@ -142,7 +145,7 @@ app.post('/api/update-score', (req, res) => {
 
 // POST - Guardar todos los scores del usuario
 app.post('/api/save-all-scores', (req, res) => {
-    const { username, puntuacion, nivel, ranasScore, bolasScore, mochilaScore, laberintoScore, hardwareSoftwareScore, reinaScore, tresEnRayaScore } = req.body;
+    const { username, puntuacion, nivel, ranasScore, bolasScore, mochilaScore, laberintoScore, quizScore, reinaScore, tresEnRayaScore, puzzleScore, animalesScore, rutinaScore } = req.body;
 
     const database = readUsers();
     const user = database.users.find(u => u.username === username);
@@ -158,9 +161,12 @@ app.post('/api/save-all-scores', (req, res) => {
     if (bolasScore !== undefined) user.bolasScore = bolasScore;
     if (mochilaScore !== undefined) user.mochilaScore = mochilaScore;
     if (laberintoScore !== undefined) user.laberintoScore = laberintoScore;
-    if (hardwareSoftwareScore !== undefined) user.hardwareSoftwareScore = hardwareSoftwareScore;
+    if (quizScore !== undefined) user.quizScore = quizScore;
     if (reinaScore !== undefined) user.reinaScore = reinaScore;
     if (tresEnRayaScore !== undefined) user.tresEnRayaScore = tresEnRayaScore;
+    if (puzzleScore !== undefined) user.puzzleScore = puzzleScore;
+    if (animalesScore !== undefined) user.animalesScore = animalesScore;
+    if (rutinaScore !== undefined) user.rutinaScore = rutinaScore;
 
     if (saveUsers(database)) {
         console.log('✓ Todos los scores actualizados: ' + username);
