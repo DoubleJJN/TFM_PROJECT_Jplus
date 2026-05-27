@@ -7,7 +7,7 @@ public class JuegoDeQuiz : MonoBehaviour
 {
     public PopUpGanar popUpGanar;
     public Button btn1, btn2, btn3;
-    public TextMeshProUGUI txt1, txt2, txt3;
+    public Image img1, img2, img3; // Componentes Image para mostrar sprites
     public ControlarQuiz controlarQuiz;
     public int restartCounter = 0;
     void Start()
@@ -17,9 +17,9 @@ public class JuegoDeQuiz : MonoBehaviour
         btn2 = GameObject.Find("Respuesta2").GetComponent<Button>();
         btn3 = GameObject.Find("Respuesta3").GetComponent<Button>();
         
-        txt1 = btn1.GetComponentInChildren<TextMeshProUGUI>();
-        txt2 = btn2.GetComponentInChildren<TextMeshProUGUI>();
-        txt3 = btn3.GetComponentInChildren<TextMeshProUGUI>();
+        img1 = btn1.GetComponent<Image>();
+        img2 = btn2.GetComponent<Image>();
+        img3 = btn3.GetComponent<Image>();
 
         btn1.onClick.AddListener(() =>
         {
@@ -36,33 +36,36 @@ public class JuegoDeQuiz : MonoBehaviour
             comprobar(3, btn3);
         });
         
-        StartCoroutine(ActualizarTextosBotonesConDelay());
+        StartCoroutine(ActualizarImagenesBotonesConDelay());
     }
 
-    IEnumerator ActualizarTextosBotonesConDelay()
+    IEnumerator ActualizarImagenesBotonesConDelay()
     {
         yield return null; // Espera un frame para asegurar que todo está inicializado
-        ActualizarTextosBotones();
+        ActualizarImagenesBotones();
     }
 
-    void ActualizarTextosBotones()
+    void ActualizarImagenesBotones()
     {
-        if (txt1 == null || txt2 == null || txt3 == null)
+        if (img1 == null || img2 == null || img3 == null)
         {
-            Debug.LogError("TextMeshProUGUI no están asignados correctamente");
+            Debug.LogError("Image components no están asignados correctamente");
             return;
         }
         
         if (controlarQuiz != null && controlarQuiz.i < controlarQuiz.preguntas.Length)
         {
-            txt1.text = controlarQuiz.preguntas[controlarQuiz.i].opciones[0];
-            txt2.text = controlarQuiz.preguntas[controlarQuiz.i].opciones[1];
-            txt3.text = controlarQuiz.preguntas[controlarQuiz.i].opciones[2];
+            if (controlarQuiz.preguntas[controlarQuiz.i].imagenes[0] != null)
+                img1.sprite = controlarQuiz.preguntas[controlarQuiz.i].imagenes[0];
+            if (controlarQuiz.preguntas[controlarQuiz.i].imagenes[1] != null)
+                img2.sprite = controlarQuiz.preguntas[controlarQuiz.i].imagenes[1];
+            if (controlarQuiz.preguntas[controlarQuiz.i].imagenes[2] != null)
+                img3.sprite = controlarQuiz.preguntas[controlarQuiz.i].imagenes[2];
             
-            // Asegurar que el texto sea visible
-            txt1.color = Color.black;
-            txt2.color = Color.black;
-            txt3.color = Color.black;
+            // Asegurar que las imágenes sean visibles
+            img1.color = Color.white;
+            img2.color = Color.white;
+            img3.color = Color.white;
         }
         else
         {
@@ -87,12 +90,12 @@ public class JuegoDeQuiz : MonoBehaviour
         }
         controlarQuiz.i++;
         controlarQuiz.CambiarPreguntas();
-        ActualizarTextosBotones();
+        ActualizarImagenesBotones();
         while (controlarQuiz.i < controlarQuiz.preguntasFallidas.Length && controlarQuiz.preguntasFallidas[controlarQuiz.i] == false)
         {
             controlarQuiz.i++;
             controlarQuiz.CambiarPreguntas();
-            ActualizarTextosBotones();
+            ActualizarImagenesBotones();
         }
 
         Debug.Log(controlarQuiz.i);
@@ -111,7 +114,7 @@ public class JuegoDeQuiz : MonoBehaviour
                 }
             }
             controlarQuiz.CambiarPreguntas();
-            ActualizarTextosBotones();
+            ActualizarImagenesBotones();
         }
     }
 
@@ -149,6 +152,6 @@ public class JuegoDeQuiz : MonoBehaviour
             controlarQuiz.preguntasFallidas[k] = true;
         }
         controlarQuiz.CambiarPreguntas();
-        ActualizarTextosBotones();
+        ActualizarImagenesBotones();
     }
 }

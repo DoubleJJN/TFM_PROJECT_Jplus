@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: a9e0091fe4464da4680f4bc733ded118
+guid: 113ed281dfaeb0a4487a07e290fe2b80
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 804881131990760745
-    second: 180_0
+      213: -6994185989429789432
+    second: quiz_5_3_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -113,13 +113,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: 180_0
+      name: quiz_5_3_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 158
-        height: 212
+        width: 245
+        height: 245
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -128,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 92d39b600238b2b00800000000000000
-      internalID: 804881131990760745
+      spriteID: 80df50f36e8afee90800000000000000
+      internalID: -6994185989429789432
       vertices: []
       indices: 
       edges: []
@@ -148,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      180_0: 804881131990760745
+      quiz_5_3_0: -6994185989429789432
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

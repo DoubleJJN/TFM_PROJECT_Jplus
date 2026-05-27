@@ -2227,9 +2227,9 @@ MonoBehaviour:
   btn1: {fileID: 644586016}
   btn2: {fileID: 45203960}
   btn3: {fileID: 794600180}
-  txt1: {fileID: 352953632}
-  txt2: {fileID: 654441561}
-  txt3: {fileID: 432100735}
+  img1: {fileID: 644586017}
+  img2: {fileID: 45203961}
+  img3: {fileID: 794600181}
   controlarQuiz: {fileID: 0}
   restartCounter: 0
 --- !u!1 &898468353

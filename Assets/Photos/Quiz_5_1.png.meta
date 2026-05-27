@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 243bb97760d7b3040a46367be6c35e9d
+guid: 4f4c9fd65b97ccd478e5f16121ef545e
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 2274823420622888458
-    second: Derecha_0
+      213: 8118821213530758066
+    second: quiz_5_1_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -113,7 +113,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Derecha_0
+      name: quiz_5_1_0
       rect:
         serializedVersion: 2
         x: 0
@@ -128,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: a0e57f839dbc19f10800000000000000
-      internalID: 2274823420622888458
+      spriteID: 2bb186bd0e8dba070800000000000000
+      internalID: 8118821213530758066
       vertices: []
       indices: 
       edges: []
@@ -148,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Derecha_0: 2274823420622888458
+      quiz_5_1_0: 8118821213530758066
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
