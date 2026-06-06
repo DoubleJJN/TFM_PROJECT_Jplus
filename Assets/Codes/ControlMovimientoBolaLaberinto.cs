@@ -89,14 +89,15 @@ public class ControlMovimientoBolaLaberinto : MonoBehaviour
             Debug.Log("Ya no se pueden seleccionar mas caminos");
             return;
         }
-        if(i==0)
-            listaCaminos[position].GetComponent<Image>().color = Color.red;
-        else if(i==1)
-            listaCaminos[position].GetComponent<Image>().color = Color.blue;
-        else if(i==2)     
-            listaCaminos[position].GetComponent<Image>().color = Color.green;
-        else if(i==3)
-            listaCaminos[position].GetComponent<Image>().color = Color.yellow;
+        
+        // Obtener la imagen del botón seleccionado
+        Image imageDelBoton = botonesControl[i].GetComponent<Image>();
+        
+        // Asignar la misma imagen/sprite al elemento en la lista
+        Image imageDelPaso = listaCaminos[position].GetComponent<Image>();
+        imageDelPaso.sprite = imageDelBoton.sprite;
+        imageDelPaso.color = Color.white;  // Asegurar que es visible
+        
         Debug.Log("Boton: " + i);
         caminos.Add(i);
         position++;
@@ -104,7 +105,9 @@ public class ControlMovimientoBolaLaberinto : MonoBehaviour
 
     void VaciarPasosListaCaminos(){
         for (int i = 0; i < numCamninos; i++){
-            listaCaminos[i].GetComponent<Image>().color = Color.white;
+            Image imagenPaso = listaCaminos[i].GetComponent<Image>();
+            imagenPaso.sprite = null;  // Limpiar la imagen
+            imagenPaso.color = Color.white;  // Resetear color a blanco
         }
     }
 

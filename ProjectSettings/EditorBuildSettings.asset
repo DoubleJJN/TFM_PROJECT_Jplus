@@ -21,20 +21,8 @@ EditorBuildSettings:
     path: Assets/Scenes/AyudaAjedrez.unity
     guid: e1290054bb6f54f43bddc7ae8bbc59bc
   - enabled: 1
-    path: Assets/Scenes/AyudaLaberinto.unity
-    guid: 8996ba72a70870442993f508d55cddd9
-  - enabled: 1
-    path: Assets/Scenes/AyudaHwYSw.unity
-    guid: ab5fa5075fa30da4ba784429aea9e99c
-  - enabled: 1
-    path: Assets/Scenes/AyudaMochila.unity
-    guid: f3fe3092f3f0b8f41809de1c93522d20
-  - enabled: 1
     path: Assets/Scenes/AyudaOrdenar.unity
     guid: 57752216817bf8d458566976a5dc663d
-  - enabled: 1
-    path: Assets/Scenes/AyudaRana.unity
-    guid: 78402ddffbaa8ed468644ec350c50cb9
   - enabled: 1
     path: Assets/Scenes/GameQuiz.unity
     guid: 9dcf16b981bcbd149b20d27a320800ad

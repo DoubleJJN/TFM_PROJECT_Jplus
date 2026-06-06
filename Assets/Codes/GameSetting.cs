@@ -32,57 +32,10 @@ public class GameSetting : MonoBehaviour
         OcultarPopUp();
     }
 
-    void Ayuda(){
-        Scene currentScene = SceneManager.GetActiveScene();
-        string sceneName = currentScene.name;
-        if (sceneName == "GameRanas")
-        {
-            int id = 0; // Tu ID aquí
-            PlayerPrefs.SetInt("ID", id); // Almacena el ID en PlayerPrefs
-            resetear.SetValor(true);
-            SceneManager.LoadScene("AyudaRana"); // Cambia a la siguiente escena
-        }
-        else if (sceneName == "GameMochila")
-        {
-            int id = 1; // Tu ID aquí
-            PlayerPrefs.SetInt("ID", id); // Almacena el ID en PlayerPrefs
-            resetearMochila.SetValor1(true);
-            SceneManager.LoadScene("AyudaMochila"); // Cambia a la siguiente escena
-        }
-        else if (sceneName == "GameLaberinto")
-        {
-            int id = 2; // Tu ID aquí
-            resetearLaberinto.SetValor(true);
-            PlayerPrefs.SetInt("ID", id); // Almacena el ID en PlayerPrefs
-            
-            SceneManager.LoadScene("AyudaLaberinto"); // Cambia a la siguiente escena
-        }
-        else if (sceneName == "GameQuiz")
-        {
-            int id = 3; // Tu ID aquí
-            PlayerPrefs.SetInt("ID", id); // Almacena el ID en PlayerPrefs
-            resetearQuiz.SetValor(true);
-            SceneManager.LoadScene("AyudaQuiz"); // Cambia a la siguiente escena
-        }
-        else if (sceneName == "GameOrdenar")
-        {
-            int id = 4; // Tu ID aquí
-            PlayerPrefs.SetInt("ID", id); // Almacena el ID en PlayerPrefs
-            SceneManager.LoadScene("AyudaOrdenar"); // Cambia a la siguiente escena
-        } else if (sceneName == "GameAjedrez")
-        {
-            int id = 5; // Tu ID aquí
-            PlayerPrefs.SetInt("ID", id); // Almacena el ID en PlayerPrefs
-            resetearAjedrez.SetValor(true);
-            SceneManager.LoadScene("AyudaAjedrez"); // Cambia a la siguiente escena
-        }
-            
-    }
-
     public void Reiniciar(){
         Scene currentScene = SceneManager.GetActiveScene();
         string sceneName = currentScene.name;
-        if(sceneName == "GameRanas"|| sceneName == "AyudaRana")
+        if(sceneName == "GameRanas")
             resetear.SetValor(true);
         if (sceneName == "GameMochila")
             resetearMochila.SetValor(true);
@@ -95,9 +48,6 @@ public class GameSetting : MonoBehaviour
         if(sceneName == "GameAjedrez")
             resetearAjedrez.SetValor(true);
             
-        /*else if(sceneName == "GameMochila")
-            Debug.Log("Reiniciar mochila");
-            //resetearMochila.SetValor(true);*/
         OcultarPopUp();
     }
 

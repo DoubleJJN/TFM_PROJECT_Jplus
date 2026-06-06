@@ -23,6 +23,8 @@ public class MovimientoEnLaberinto : MonoBehaviour
     public GameObject puntoMovimiento;
     public GameObject DestinoObjetivo1;
     public GameObject DestinoObjetivo2;
+    public GameObject imagenBien;  // Imagen de correcto
+    public GameObject imagenMal;   // Imagen de fallo
     int numbCaminos = 13;
     public GameObject[] Caminos;
     static int caminoActual = 0;
@@ -77,6 +79,11 @@ public class MovimientoEnLaberinto : MonoBehaviour
 
     public void MoverHaciaDestino(List<int> caminos)
     {
+        StartCoroutine(MoverHaciaDestinoCorrutina(caminos));
+    }
+
+    IEnumerator MoverHaciaDestinoCorrutina(List<int> caminos)
+    {
         Conexiones conexiones;
         for (int i = 0; i < caminos.Count; i++)
         {
@@ -98,35 +105,69 @@ public class MovimientoEnLaberinto : MonoBehaviour
                         break;
                 }
             }
+            
+            // Mover suavemente a la siguiente posición
+            yield return StartCoroutine(MoverSuavemente(Caminos[caminoActual].transform.position, 0.3f));
+            
             if ((caminoActual == Destino1))
             {
-                ControlMovimientoBolaLaberinto.pActual += 3; // Reemplaza "valor" con el valor que deseas asignar
+                ControlMovimientoBolaLaberinto.pActual += 3;
                 Debug.Log("PASA POR AQUI");
             }
             else if ((caminoActual == Destino2))
             {
-                ControlMovimientoBolaLaberinto.pActual -= 2; // Reemplaza "valor" con el valor que deseas asignar
+                ControlMovimientoBolaLaberinto.pActual -= 2;
                 Debug.Log("PASA POR AQUI2");
             }
-            puntoMovimiento.transform.position = Caminos[caminoActual].transform.position;
         }
+        
         if(caminoActual != Destino1 && caminoActual != Destino2){
             restartCounter++;
-            ReiniciarJuego();
-            Debug.Log("SE REINICIA");
+            ReiniciarJuego(true);  // true = es por fallo
+            Debug.Log("SE REINICIA - No llegó a ningún destino");
         }   
         else{
-            paso++;
-            if (paso == 5)
+            // Verificar si el valor final es exactamente el objetivo
+            if (ControlMovimientoBolaLaberinto.pActual == ControlMovimientoBolaLaberinto.pObjetivo)
             {
-                Invoke("MostrarPopUpGanadoConRetraso", 0.3f);
-            }else{
-                colocarObjetivos();
+                // Mostrar imagen "bien" por 1 segundo
+                yield return StartCoroutine(MostrarImagenTiempoLimitado(imagenBien, 1f));
+                
+                paso++;
+                if (paso == 5)
+                {
+                    Invoke("MostrarPopUpGanadoConRetraso", 0.3f);
+                }
+                else
+                {
+                    colocarObjetivos();
+                }
             }
-            
+            else
+            {
+                // El valor no coincide con el objetivo - es un fallo
+                restartCounter++;
+                ReiniciarJuego(true);  // true = es por fallo
+                Debug.Log("SE REINICIA - Valor incorrecto. Esperaba: " + ControlMovimientoBolaLaberinto.pObjetivo + ", obtuve: " + ControlMovimientoBolaLaberinto.pActual);
+            }
         }
         caminos.Clear();
+    }
 
+    IEnumerator MoverSuavemente(Vector3 posicionDestino, float duracion)
+    {
+        Vector3 posicionInicial = puntoMovimiento.transform.position;
+        float tiempoTranscurrido = 0f;
+
+        while (tiempoTranscurrido < duracion)
+        {
+            tiempoTranscurrido += Time.deltaTime;
+            float progreso = tiempoTranscurrido / duracion;
+            puntoMovimiento.transform.position = Vector3.Lerp(posicionInicial, posicionDestino, progreso);
+            yield return null;
+        }
+
+        puntoMovimiento.transform.position = posicionDestino;
     }
 
     void colocarObjetivos() {
@@ -142,13 +183,32 @@ public class MovimientoEnLaberinto : MonoBehaviour
             DestinoObjetivo2.transform.position = Caminos[Destino2].transform.position;
         }
         else{
-            ReiniciarJuego();
+            ReiniciarJuego(false);  // false porque es ajuste inicial, no un fallo
         }
         
     }
 
-    public void ReiniciarJuego()
+    public void ReiniciarJuego(bool esPorFallo = false)
     {
+        // Mostrar imagen "mal" si es por fallo
+        if (esPorFallo && imagenMal != null)
+        {
+            StartCoroutine(MostrarImagenTiempoLimitado(imagenMal, 1f));
+        }
+        else
+        {
+            // Si no es por fallo, asegurar que las imágenes estén ocultas
+            if (imagenBien != null) imagenBien.SetActive(false);
+            if (imagenMal != null) imagenMal.SetActive(false);
+        }
+        
+        // Si ha cometido más de 3 errores, mostrar popup
+        if (esPorFallo && restartCounter > 3)
+        {
+            Invoke("MostrarPopUpGanadoConRetraso", 0.5f);
+            return;  // No reiniciar, solo mostrar popup
+        }
+        
         paso = 0;
         ControlMovimientoBolaLaberinto.pActual = 0;
         ControlMovimientoBolaLaberinto.pObjetivo = 3;
@@ -166,26 +226,41 @@ public class MovimientoEnLaberinto : MonoBehaviour
         DestinoObjetivo2.transform.position = Caminos[Destino2].transform.position;
     }
 
+    IEnumerator MostrarImagenTiempoLimitado(GameObject imagen, float duracion)
+    {
+        if (imagen == null) yield break;
+        
+        imagen.SetActive(true);
+        yield return new WaitForSeconds(duracion);
+        imagen.SetActive(false);
+    }
+
     public void MostrarPopUpGanadoConRetraso()
     {
         popUpGanar.SetNombreJuego("Laberinto");
         string mensajeGanado = "";
+        
         if (restartCounter == 0)
         {
-            mensajeGanado = "¡Felicidades! Has ganado sin cometer errores.";
+            mensajeGanado = "¡Felicidades! ¡Has completado todos los niveles sin errores!";
         }
         else if (restartCounter == 1)
         {
-            mensajeGanado = "¡Bien hecho! Has ganado con solo un error.";
+            mensajeGanado = "¡Bien hecho! ¡Has completado todos los niveles con solo 1 error!";
+        }
+        else if (restartCounter == 2)
+        {
+            mensajeGanado = "¡Lo lograste! Completaste todos los niveles con " + restartCounter + " errores.";
         }
         else
         {
-            mensajeGanado = "Has ganado, pero cometiste algunos errores. ¡Sigue practicando!";
+            mensajeGanado = "Cometiste " + restartCounter + " errores. ¡Intenta mejorar!";
         }
+        
         popUpGanar.MostrarPopUpGanado(restartCounter, mensajeGanado);
     }
 
     public void SetValor(bool valor){
-        ReiniciarJuego();
+        ReiniciarJuego(false);  // false = es por reinicio manual, no por fallo
     }
 }
