@@ -5,6 +5,21 @@ TextureImporter:
   - first:
       213: -6364515176718230925
     second: boton rutina_0
+  - first:
+      213: -4235977770412578774
+    second: boton rutina_1
+  - first:
+      213: 1949231628345618616
+    second: boton rutina_2
+  - first:
+      213: -2592665358777560282
+    second: boton rutina_3
+  - first:
+      213: -6090490829452636517
+    second: boton rutina_4
+  - first:
+      213: 4041142312892135714
+    second: boton rutina_5
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -117,9 +132,9 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 0
-        width: 1024
-        height: 1024
+        y: 4087
+        width: 9
+        height: 9
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -130,6 +145,116 @@ TextureImporter:
       bones: []
       spriteID: 37a902cda23bca7a0800000000000000
       internalID: -6364515176718230925
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: boton rutina_1
+      rect:
+        serializedVersion: 2
+        x: 4079
+        y: 4091
+        width: 6
+        height: 5
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a286b1639a8c635c0800000000000000
+      internalID: -4235977770412578774
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: boton rutina_2
+      rect:
+        serializedVersion: 2
+        x: 1189
+        y: 1211
+        width: 1682
+        height: 1812
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8b03f78a6df0d0b10800000000000000
+      internalID: 1949231628345618616
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: boton rutina_3
+      rect:
+        serializedVersion: 2
+        x: 4067
+        y: 0
+        width: 6
+        height: 5
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6235a9cb790050cd0800000000000000
+      internalID: -2592665358777560282
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: boton rutina_4
+      rect:
+        serializedVersion: 2
+        x: 4075
+        y: 0
+        width: 6
+        height: 5
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b9e83b20cda3a7ba0800000000000000
+      internalID: -6090490829452636517
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: boton rutina_5
+      rect:
+        serializedVersion: 2
+        x: 4087
+        y: 0
+        width: 9
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2297cbec585051830800000000000000
+      internalID: 4041142312892135714
       vertices: []
       indices: 
       edges: []
@@ -149,6 +274,11 @@ TextureImporter:
       entries: []
     nameFileIdTable:
       boton rutina_0: -6364515176718230925
+      boton rutina_1: -4235977770412578774
+      boton rutina_2: 1949231628345618616
+      boton rutina_3: -2592665358777560282
+      boton rutina_4: -6090490829452636517
+      boton rutina_5: 4041142312892135714
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

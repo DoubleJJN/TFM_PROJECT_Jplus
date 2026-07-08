@@ -5,7 +5,7 @@ using System.Collections;
 
 public class TotalStarsCounter : MonoBehaviour
 {
-    public int puntuacionRana, puntuacionBolas, puntuacionMochila, puntuacionLaberinto, puntuacionQuiz, puntuacionReina, puntuacionTresEnRaya;
+    public int puntuacionRana, puntuacionBolas, puntuacionMochila, puntuacionLaberinto, puntuacionQuiz, puntuacionReina, puntuacionTresEnRaya, puntuacionPuzzle, puntuacionAnimales, puntuacionRutina;
     public static int totalPuntacion;
     public static TotalStarsCounter instance;
     public TextMeshProUGUI totalPointsText;
@@ -13,14 +13,15 @@ public class TotalStarsCounter : MonoBehaviour
     private string usuarioLogueado;
     private string usersDatabasePath;
     private float tiempoUltimaActualizacion = 0f;
-    private const float INTERVALO_ACTUALIZACION = 0.5f; // Actualizar cada 0.5 segundos
+    private const float INTERVALO_ACTUALIZACION = 0.5f;
 
     void Awake()
     {
         if (instance == null)
         {
             instance = this;
-            DontDestroyOnLoad(gameObject.transform.root.gameObject);
+            // ¡MAGIA 1!: Solo nos protegemos a nosotros mismos, no al Canvas entero
+            DontDestroyOnLoad(gameObject); 
         }
         else
         {
@@ -28,63 +29,26 @@ public class TotalStarsCounter : MonoBehaviour
         }
     }
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        Debug.Log("═══ INICIANDO TOTALSTARSCOUNTER ═══");
-        
-        // Inicializar ruta de la base de datos
         usersDatabasePath = Path.Combine(Application.streamingAssetsPath, "users.json");
-        Debug.Log("📂 Ruta de database: " + usersDatabasePath);
-        
-        // Si totalPointsText no está asignado, intenta buscarlo
-        if (totalPointsText == null)
-        {
-            GameObject totalPointsObj = GameObject.Find("TotalPoints");
-            if (totalPointsObj != null)
-            {
-                totalPointsText = totalPointsObj.GetComponent<TextMeshProUGUI>();
-                Debug.Log("✓ TotalPointsText encontrado automáticamente");
-            }
-            else
-            {
-                Debug.LogWarning("⚠️ No se encontró objeto TotalPoints en la escena");
-            }
-        }
-        else
-        {
-            Debug.Log("✓ TotalPointsText ya estaba asignado");
-        }
-        
-        // Asegurar que totalPointsText se dibuje encima y sea visible
-        if (totalPointsText != null)
-        {
-            totalPointsText.GetComponent<RectTransform>().SetAsLastSibling();
-            Color textColor = totalPointsText.color;
-            textColor.a = 1f;
-            totalPointsText.color = textColor;
-            Debug.Log("✓ TotalPointsText configurado (visible y encima)");
-        }
-        
-        // Actualizar puntuación inicial
+        BuscarTextoPuntuacion();
         ActualizarTotalPuntacion();
-        
-        Debug.Log("═══ TOTALSTARSCOUNTER LISTO ═══");
     }
 
     void Update()
     {
-        // Si no tenemos UserManager, intentar encontrarlo
         if (userManager == null)
         {
             userManager = FindFirstObjectByType<UserManager>();
-            if (userManager != null)
-            {
-                Debug.Log("✓ UserManager encontrado en Update()");
-            }
         }
         
-        // Actualizar puntuación cada X segundos (no cada frame)
+        // ¡MAGIA 2!: Si cambiamos de escena y la estrella se pierde, la buscamos automáticamente
+        if (totalPointsText == null)
+        {
+            BuscarTextoPuntuacion();
+        }
+        
         tiempoUltimaActualizacion += Time.deltaTime;
         if (tiempoUltimaActualizacion >= INTERVALO_ACTUALIZACION)
         {
@@ -92,193 +56,90 @@ public class TotalStarsCounter : MonoBehaviour
             ActualizarTotalPuntacion();
         }
     }
-    
-    private void BuscarUserManager()
+
+    private void BuscarTextoPuntuacion()
     {
-        if (userManager == null)
+        GameObject totalPointsObj = GameObject.Find("TotalPoints");
+        if (totalPointsObj != null)
         {
-            // Buscar en la escena actual
-            userManager = FindFirstObjectByType<UserManager>();
-            
-            if (userManager != null)
-            {
-                Debug.Log("✓ UserManager encontrado en Start()");
-            }
-            else
-            {
-                Debug.LogWarning("⚠️ UserManager NO encontrado en Start(). Se buscará luego cuando sea necesario");
-            }
+            totalPointsText = totalPointsObj.GetComponent<TextMeshProUGUI>();
+            totalPointsText.GetComponent<RectTransform>().SetAsLastSibling();
+            Color textColor = totalPointsText.color;
+            textColor.a = 1f;
+            totalPointsText.color = textColor;
+            totalPointsText.text = totalPuntacion.ToString();
         }
     }
 
     public void AgregarEstrellas(int estrellas, string nombreJuego)
     {
-        Debug.Log("🌟 AgregarEstrellas() iniciado - Juego: " + nombreJuego + ", Estrellas: " + estrellas);
+        if (userManager == null) userManager = FindFirstObjectByType<UserManager>();
+        if (userManager == null) return;
         
-        // Buscar UserManager si no lo tenemos
-        if (userManager == null)
-        {
-            userManager = FindFirstObjectByType<UserManager>();
-            Debug.Log("   UserManager encontrado: " + (userManager != null ? "✓" : "❌"));
-        }
-        
-        if (userManager == null)
-        {
-            Debug.LogError("❌ UserManager no encontrado - no se puede guardar la puntuación");
-            return;
-        }
-        
-        // Obtener el usuario actual desde UserManager
         string usuarioActual = userManager.GetCurrentUser();
-        Debug.Log("   Usuario actual: " + usuarioActual);
+        if (string.IsNullOrEmpty(usuarioActual)) return;
         
-        if (string.IsNullOrEmpty(usuarioActual))
-        {
-            Debug.LogWarning("⚠️ No hay usuario logueado");
-            return;
-        }
-        
-        Debug.Log("   Llamando a UpdateGameScore...");
-        // Actualizar el máximo del juego específico (solo si es mayor)
         userManager.UpdateGameScore(usuarioActual, nombreJuego, estrellas);
-        
-        Debug.Log("   Llamando a ActualizarTotalPuntacion...");
-        // Recargar el total
         ActualizarTotalPuntacion();
-        
-        Debug.Log("   Total puntuación: " + totalPuntacion);
-        
-        // Actualizar TextMesh
-        if (totalPointsText != null)
-        {
-            totalPointsText.text = totalPuntacion.ToString();
-            Debug.Log("   TextMesh actualizado a: " + totalPuntacion);
-        }
-        else
-        {
-            Debug.LogWarning("⚠️ totalPointsText es null");
-        }
-        
-        Debug.Log("✓ AgregarEstrellas() completado");
     }
 
     void ActualizarTotalPuntacion()
     {
-        // Si no tenemos UserManager, buscarlo
-        if (userManager == null)
-        {
-            userManager = FindFirstObjectByType<UserManager>();
-        }
+        if (userManager == null) userManager = FindFirstObjectByType<UserManager>();
+        if (userManager == null) return;
         
-        if (userManager == null)
-        {
-            Debug.LogError("❌ UserManager es null en ActualizarTotalPuntacion");
-            return;
-        }
-        
-        // Obtener el usuario actual
         string usuarioActual = userManager.GetCurrentUser();
-        // Debug.Log("   Usuario actual en ActualizarTotalPuntacion: " + usuarioActual);
+        if (string.IsNullOrEmpty(usuarioActual)) return;
         
-        if (string.IsNullOrEmpty(usuarioActual))
-        {
-            //Debug.LogError("❌ Usuario current es null/empty");
-            return;
-        }
-        
-        // Intenta obtener datos del archivo users.json directamente
         User user = null;
-        
         string streamingPath = Path.Combine(Application.streamingAssetsPath, "users.json");
         string persistentPath = Path.Combine(Application.persistentDataPath, "users.json");
         
-        //Debug.Log("   persistentPath: " + persistentPath + " | Existe: " + File.Exists(persistentPath));
-        //Debug.Log("   streamingPath: " + streamingPath + " | Existe: " + File.Exists(streamingPath));
-        
-        // Intento 1: persistentDataPath (donde UserManager GUARDA en Editor)
         try
         {
             if (File.Exists(persistentPath))
             {
-                //Debug.Log("   Leyendo persistentPath...");
                 string json = File.ReadAllText(persistentPath, System.Text.Encoding.UTF8);
                 UserDatabase database = JsonUtility.FromJson<UserDatabase>(json);
-                
-                //Debug.Log("   BD cargada con " + (database?.users?.Count ?? 0) + " usuarios");
-                
                 if (database != null && database.users != null)
                 {
                     foreach (User u in database.users)
                     {
-                        if (u.username == usuarioActual)
-                        {
-                            user = u;                           
-                            break;
-                        }
+                        if (u.username == usuarioActual) { user = u; break; }
                     }
                 }
-                
-                if (user == null)
-                    Debug.Log("   ❌ Usuario " + usuarioActual + " NO encontrado en persistentPath");
-            }
-            else
-            {
-                Debug.Log("   persistentPath no existe");
             }
         }
-        catch (System.Exception e)
-        {
-            Debug.LogError("❌ Error leyendo persistentPath: " + e.Message);
-        }
+        catch { }
         
-        // Intento 2: StreamingAssets (fallback)
         if (user == null)
         {
             try
             {
                 if (File.Exists(streamingPath))
                 {
-                    Debug.Log("   Leyendo streamingPath (fallback)...");
                     string json = File.ReadAllText(streamingPath, System.Text.Encoding.UTF8);
                     UserDatabase database = JsonUtility.FromJson<UserDatabase>(json);
-                    
                     if (database != null && database.users != null)
                     {
                         foreach (User u in database.users)
                         {
-                            if (u.username == usuarioActual)
-                            {
-                                user = u;
-                                Debug.Log("   ✓ Usuario encontrado en streamingPath");
-                                break;
-                            }
+                            if (u.username == usuarioActual) { user = u; break; }
                         }
                     }
                 }
             }
-            catch (System.Exception e)
-            {
-                Debug.LogError("❌ Error leyendo StreamingAssets: " + e.Message);
-            }
+            catch { }
         }
         
-        // Intento 3: UserManager (fallback en memoria)
-        if (user == null)
-        {
-            Debug.Log("   Intentando fallback con UserManager...");
-            user = userManager.GetUser(usuarioActual);
-            if (user != null)
-                Debug.Log("   ✓ Usuario encontrado en UserManager en memoria");
-        }
+        if (user == null) user = userManager.GetUser(usuarioActual);
         
         if (user == null)
         {
-            Debug.LogError("❌ CRÍTICO: Usuario NO encontrado en ninguna fuente: " + usuarioActual);
             totalPuntacion = 0;
             return;
         }
         
-        // Cargar todos los scores
         puntuacionRana = user.ranasScore;
         puntuacionBolas = user.bolasScore;
         puntuacionMochila = user.mochilaScore;
@@ -286,19 +147,11 @@ public class TotalStarsCounter : MonoBehaviour
         puntuacionQuiz = user.quizScore;
         puntuacionReina = user.reinaScore;
         puntuacionTresEnRaya = user.tresEnRayaScore;
+        puntuacionPuzzle = user.puzzleScore;
+        puntuacionAnimales = user.animalesScore;
+        puntuacionRutina = user.rutinaScore;
         totalPuntacion = user.puntuacion;
         
-        /*Debug.Log("✓ Puntuaciones cargadas:");
-        Debug.Log("  - Ranas: " + puntuacionRana);
-        Debug.Log("  - Bolas: " + puntuacionBolas);
-        Debug.Log("  - Mochila: " + puntuacionMochila);
-        Debug.Log("  - Laberinto: " + puntuacionLaberinto);
-        Debug.Log("  - Quiz: " + puntuacionQuiz);
-        Debug.Log("  - Reina: " + puntuacionReina);
-        Debug.Log("  - TresEnRaya: " + puntuacionTresEnRaya);
-        Debug.Log("  - TOTAL: " + totalPuntacion);*/
-        
-        // Mostrar en UI
         if (totalPointsText != null)
         {
             totalPointsText.text = totalPuntacion.ToString();
@@ -307,21 +160,12 @@ public class TotalStarsCounter : MonoBehaviour
 
     public void SincronizarPuntuacionUsuario()
     {
-        // Actualizar el usuario actual logueado
         usuarioLogueado = PlayerPrefs.GetString("UsuarioLogueado", "");
-        Debug.Log("🔄 SincronizarPuntuacionUsuario() para usuario: " + usuarioLogueado);
-        
-        // Forzar búsqueda de UserManager
-        if (userManager == null)
-        {
-            userManager = FindFirstObjectByType<UserManager>();
-        }
-        
+        if (userManager == null) userManager = FindFirstObjectByType<UserManager>();
         ActualizarTotalPuntacion();
-        Debug.Log("✓ Puntuación sincronizada al cambiar usuario");
     }
     
-    // Métodos para leer/escribir directamente del archivo users.json
+    // --- MÉTODOS ORIGINALES DE JSON INTACTOS ---
     private int CargarPuntuacionDirecta(string username)
     {
         try
@@ -330,24 +174,16 @@ public class TotalStarsCounter : MonoBehaviour
             {
                 string json = File.ReadAllText(usersDatabasePath);
                 UserDatabase database = JsonUtility.FromJson<UserDatabase>(json);
-                
                 if (database != null && database.users != null)
                 {
                     foreach (User user in database.users)
                     {
-                        if (user.username == username)
-                        {
-                            return user.puntuacion;
-                        }
+                        if (user.username == username) return user.puntuacion;
                     }
                 }
             }
         }
-        catch (System.Exception e)
-        {
-            Debug.LogError("❌ Error al cargar puntuación directamente: " + e.Message);
-        }
-        
+        catch (System.Exception e) { Debug.LogError("Error: " + e.Message); }
         return 0;
     }
     
@@ -359,7 +195,6 @@ public class TotalStarsCounter : MonoBehaviour
             {
                 string json = File.ReadAllText(usersDatabasePath);
                 UserDatabase database = JsonUtility.FromJson<UserDatabase>(json);
-                
                 if (database != null && database.users != null)
                 {
                     foreach (User user in database.users)
@@ -370,21 +205,13 @@ public class TotalStarsCounter : MonoBehaviour
                             break;
                         }
                     }
-                    
-                    // Guardar cambios
                     string updatedJson = JsonUtility.ToJson(database, true);
                     File.WriteAllText(usersDatabasePath, updatedJson);
-                    Debug.Log("💾 Puntuación guardada directamente: " + username + " = " + newScore);
                     return;
                 }
             }
-            
-            Debug.LogWarning("⚠️ No se pudo guardar la puntuación: archivo no encontrado");
         }
-        catch (System.Exception e)
-        {
-            Debug.LogError("❌ Error al guardar puntuación directamente: " + e.Message);
-        }
+        catch (System.Exception e) { Debug.LogError("Error: " + e.Message); }
     }
     
     private void ActualizarPuntuacionJuegoDirecta(string username, string nombreJuego, int nuevaPuntuacion)
@@ -395,74 +222,45 @@ public class TotalStarsCounter : MonoBehaviour
             {
                 string json = File.ReadAllText(usersDatabasePath);
                 UserDatabase database = JsonUtility.FromJson<UserDatabase>(json);
-                
                 if (database != null && database.users != null)
                 {
                     foreach (User user in database.users)
                     {
                         if (user.username == username)
                         {
-                            // Actualizar solo si la nueva puntuación es mayor
                             int puntuacionActual = ObtenerPuntuacionJuego(user, nombreJuego);
-                            
                             if (nuevaPuntuacion > puntuacionActual)
                             {
                                 ActualizarScoreJuego(user, nombreJuego, nuevaPuntuacion);
-                                Debug.Log("🎮 " + nombreJuego + ": " + puntuacionActual + " → " + nuevaPuntuacion);
                             }
-                            else
-                            {
-                                Debug.Log("🎮 " + nombreJuego + ": No se actualiza (" + nuevaPuntuacion + " ≤ " + puntuacionActual + ")");
-                            }
-                            
-                            // Recalcular total
                             user.puntuacion = user.GetTotalScore();
                             break;
                         }
                     }
-                    
-                    // Guardar cambios
                     string updatedJson = JsonUtility.ToJson(database, true);
                     File.WriteAllText(usersDatabasePath, updatedJson);
                     return;
                 }
             }
-            
-            Debug.LogWarning("⚠️ No se pudo actualizar puntuación del juego: archivo no encontrado");
         }
-        catch (System.Exception e)
-        {
-            Debug.LogError("❌ Error al actualizar puntuación del juego: " + e.Message);
-        }
+        catch (System.Exception e) { Debug.LogError("Error: " + e.Message); }
     }
     
     private int ObtenerPuntuacionJuego(User user, string nombreJuego)
     {
         switch (nombreJuego.ToLower())
         {
-            case "ranas":
-                return user.ranasScore;
-            case "bolas":
-                return user.bolasScore;
-            case "mochila":
-                return user.mochilaScore;
-            case "laberinto":
-                return user.laberintoScore;
-            case "quiz":
-                return user.quizScore;
-            case "reina":
-                return user.reinaScore;
-            case "tresEnraya":
-            case "tresenraya":
-                return user.tresEnRayaScore;
-            case "puzzle":
-                return user.puzzleScore;
-            case "animales":
-                return user.animalesScore;
-            case "rutina":
-                return user.rutinaScore;
-            default:
-                return 0;
+            case "ranas": return user.ranasScore;
+            case "bolas": return user.bolasScore;
+            case "mochila": return user.mochilaScore;
+            case "laberinto": return user.laberintoScore;
+            case "quiz": return user.quizScore;
+            case "reina": return user.reinaScore;
+            case "tresenraya": return user.tresEnRayaScore;
+            case "puzzle": return user.puzzleScore;
+            case "animales": return user.animalesScore;
+            case "rutina": return user.rutinaScore;
+            default: return 0;
         }
     }
     
@@ -470,37 +268,16 @@ public class TotalStarsCounter : MonoBehaviour
     {
         switch (nombreJuego.ToLower())
         {
-            case "ranas":
-                user.ranasScore = nuevaPuntuacion;
-                break;
-            case "bolas":
-                user.bolasScore = nuevaPuntuacion;
-                break;
-            case "mochila":
-                user.mochilaScore = nuevaPuntuacion;
-                break;
-            case "laberinto":
-                user.laberintoScore = nuevaPuntuacion;
-                break;
-            case "quiz":
-                user.quizScore = nuevaPuntuacion;
-                break;
-            case "reina":
-                user.reinaScore = nuevaPuntuacion;
-                break;
-            case "tresEnraya":
-            case "tresenraya":
-                user.tresEnRayaScore = nuevaPuntuacion;
-                break;
-            case "puzzle":
-                user.puzzleScore = nuevaPuntuacion;
-                break;
-            case "animales":
-                user.animalesScore = nuevaPuntuacion;
-                break;
-            case "rutina":
-                user.rutinaScore = nuevaPuntuacion;
-                break;
+            case "ranas": user.ranasScore = nuevaPuntuacion; break;
+            case "bolas": user.bolasScore = nuevaPuntuacion; break;
+            case "mochila": user.mochilaScore = nuevaPuntuacion; break;
+            case "laberinto": user.laberintoScore = nuevaPuntuacion; break;
+            case "quiz": user.quizScore = nuevaPuntuacion; break;
+            case "reina": user.reinaScore = nuevaPuntuacion; break;
+            case "tresenraya": user.tresEnRayaScore = nuevaPuntuacion; break;
+            case "puzzle": user.puzzleScore = nuevaPuntuacion; break;
+            case "animales": user.animalesScore = nuevaPuntuacion; break;
+            case "rutina": user.rutinaScore = nuevaPuntuacion; break;
         }
     }
 }

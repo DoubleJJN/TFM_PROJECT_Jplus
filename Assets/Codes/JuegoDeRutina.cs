@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using System.Collections.Generic;
+using System.Collections;
 using System.IO;
 using TMPro;
 
@@ -14,14 +15,11 @@ public class JuegoDeRutina : MonoBehaviour
     public Button[][] botonesPuesto = new Button[3][]; /*3 niveles con 3, 4 y 5 botones respectivamente*/
     public GameObject[] panelesNiveles = new GameObject[3]; // Paneles para cada nivel (Nivel 1, 2, 3)
     public PopUpGanar popUpGanar; // PopUp que se muestra cuando se completa el juego
-    public TotalStarsCounter totalStarsCounter; // Para guardar estrellas
-    
+    public GameObject imagenBien, imagenMal; // Imágenes para feedback de respuestas correctas/incorrectas
+    private bool bloqueado = false;
     // Trackear cuál botón de "Poner" está en cada posición de "Puesto" (-1 = vacío)
     private int[][] seleccionesActuales = new int[3][]; // Ej: nivel 1: [-1, -1, -1]
-    
-    // Contador de fallos
-    private int[] contadorFallos = new int[3]; // Para los 3 niveles
-    
+    private int restartCounter = 0; // Contador de reinicios para guardar estrellas
     // Control de Invoke
     private bool popUpPendiente = false;
     
@@ -67,7 +65,7 @@ public class JuegoDeRutina : MonoBehaviour
         InicializarArrays();
         BuscarBotonesAutomaticamente();
         ActualizarPaneles();
-        ConfigurarBotonesNivel1();
+        ConfigurarBotonesNivel(0);
     }
     
     void InicializarArrays()
@@ -107,11 +105,6 @@ public class JuegoDeRutina : MonoBehaviour
         imageniesPuestoCache[1] = new Image[4]; // Nivel 2
         imageniesPuestoCache[2] = new Image[5]; // Nivel 3
         
-        // Inicializar contador de fallos
-        contadorFallos = new int[3];
-        contadorFallos[0] = 0;
-        contadorFallos[1] = 0;
-        contadorFallos[2] = 0;
     }
 
     void BuscarBotonesAutomaticamente()
@@ -198,63 +191,7 @@ public class JuegoDeRutina : MonoBehaviour
     {
         nivelActual = nuevoNivel;
         ActualizarPaneles();
-        
-        // Configurar los botones del nuevo nivel
-        if (nivelActual == 1)
-        {
-            ConfigurarBotonesNivel1();
-        }
-        else if (nivelActual == 2)
-        {
-            ConfigurarBotonesNivel2();
-        }
-        else if (nivelActual == 3)
-        {
-            ConfigurarBotonesNivel3();
-        }
-    }
-
-    void ConfigurarBotonesNivel1()
-    {
-        // Limpiar listeners anteriores de botonesPoner
-        for (int i = 0; i < 5; i++)
-        {
-            botonesPoner[0][i].onClick.RemoveAllListeners();
-        }
-        
-        // Configurar listeners para los 5 botones del Nivel 1
-        for (int i = 0; i < 5; i++)
-        {
-            int indice = i;
-            botonesPoner[0][i].onClick.AddListener(() => ClickEnBotonPonerNivel1(indice));
-        }
-
-        // Limpiar listeners anteriores de botonesPuesto
-        for (int i = 0; i < 3; i++)
-        {
-            botonesPuesto[0][i].onClick.RemoveAllListeners();
-        }
-        
-        // Configurar listeners para los 3 botones de respuesta del Nivel 1
-        for (int i = 0; i < 3; i++)
-        {
-            int posicion = i;
-            botonesPuesto[0][i].onClick.AddListener(() => ClickEnBotonPuestoNivel1(posicion));
-        }
-    }
-
-    void ClickEnBotonPuestoNivel1(int posicion)
-    {
-        // Quitar solo la imagen en esa posición
-        if (seleccionesActuales[0][posicion] != -1)
-        {
-            LimpiarPosicion(0, posicion);
-            Debug.Log("Imagen en Respuesta " + posicion + " fue eliminada");
-        }
-        else
-        {
-            Debug.Log("No hay nada en la posición " + posicion);
-        }
+        ConfigurarBotonesNivel(nivelActual - 1);
     }
 
     void LimpiarPosicion(int nivel, int posicion)
@@ -271,51 +208,6 @@ public class JuegoDeRutina : MonoBehaviour
         // Marcar como vacío
         seleccionesActuales[nivel][posicion] = -1;
     }
-
-    void ClickEnBotonPonerNivel1(int indiceBotonPoner)
-    {
-        // Verificar si este botón ya está seleccionado
-        int posicionEnPuesto = -1;
-        for (int i = 0; i < seleccionesActuales[0].Length; i++)
-        {
-            if (seleccionesActuales[0][i] == indiceBotonPoner)
-            {
-                posicionEnPuesto = i;
-                break;
-            }
-        }
-
-        if (posicionEnPuesto != -1)
-        {
-            // El botón ya está seleccionado, lo removemos
-            QuitarSeleccion(0, posicionEnPuesto);
-            Debug.Log("Botón " + indiceBotonPoner + " removido de la posición " + posicionEnPuesto);
-        }
-        else
-        {
-            // El botón no está seleccionado, lo añadimos en el siguiente espacio libre
-            int siguienteLivre = -1;
-            for (int i = 0; i < seleccionesActuales[0].Length; i++)
-            {
-                if (seleccionesActuales[0][i] == -1)
-                {
-                    siguienteLivre = i;
-                    break;
-                }
-            }
-
-            if (siguienteLivre != -1)
-            {
-                AñadirSeleccion(0, siguienteLivre, indiceBotonPoner);
-                Debug.Log("Botón " + indiceBotonPoner + " añadido en la posición " + siguienteLivre);
-            }
-            else
-            {
-                Debug.Log("No hay más espacios disponibles en Nivel 1");
-            }
-        }
-    }
-
     void AñadirSeleccion(int nivel, int posicion, int indiceBotonPoner)
     {
         // Guardar qué botón está en esta posición
@@ -348,8 +240,8 @@ public class JuegoDeRutina : MonoBehaviour
 
         if (nivelLleno)
         {
-            // Verificar si es el orden correcto
-            VerificarNivel(nivel);
+            // Cambiamos la llamada normal por la Corrutina
+            StartCoroutine(RutinaVerificarNivel(nivel));
         }
     }
 
@@ -448,8 +340,10 @@ public class JuegoDeRutina : MonoBehaviour
         }
         else
         {
-            contadorFallos[nivel]++;
+            restartCounter++;
             ResetearNivel(nivel);
+            if(restartCounter == 3)
+                Invoke("MostrarPopUpGanadoConRetraso", 0.3f);
         }
     }
 
@@ -481,62 +375,71 @@ public class JuegoDeRutina : MonoBehaviour
         popUpGanar.SetNombreJuego("Rutina");
         string mensajeGanado = "";
         
-        // Calcular fallos totales
-        int fallosTotales = contadorFallos[0] + contadorFallos[1] + contadorFallos[2];
-        
-        if (fallosTotales == 0)
+        if (restartCounter == 0)
         {
-            mensajeGanado = "¡Felicidades! ¡Lo hiciste perfecto sin errores!";
+            mensajeGanado = "¡Felicidades! ¡Has completado todos los niveles sin errores!";
         }
-        else if (fallosTotales <= 2)
+        else if (restartCounter == 1)
         {
-            mensajeGanado = "¡Muy bien! Cometiste solo algunos errores. ¡Sigue practicando!";
+            mensajeGanado = "¡Bien hecho! ¡Has completado todos los niveles con solo 1 error!";
+        }
+        else if (restartCounter == 2)
+        {
+            mensajeGanado = "¡Lo lograste! Completaste todos los niveles con " + restartCounter + " errores.";
         }
         else
         {
-            mensajeGanado = "¡Lo intentaste! Prueba nuevamente para mejorar.";
+            mensajeGanado = "Cometiste " + restartCounter + " errores. ¡Intenta mejorar!";
         }
-        
-        popUpGanar.MostrarPopUpGanado(fallosTotales, mensajeGanado);
+        popUpGanar.MostrarPopUpGanado(restartCounter, mensajeGanado);
     }
-
-    // ==================== NIVEL 2 ====================
-    void ConfigurarBotonesNivel2()
+void ConfigurarBotonesNivel(int nivelIndex)
     {
-        // Limpiar listeners anteriores de botonesPoner
+        // 1. Limpiar y configurar botones Poner (siempre son 5)
         for (int i = 0; i < 5; i++)
         {
-            botonesPoner[1][i].onClick.RemoveAllListeners();
-        }
-        
-        // Configurar listeners para los 5 botones del Nivel 2
-        for (int i = 0; i < 5; i++)
-        {
+            botonesPoner[nivelIndex][i].onClick.RemoveAllListeners();
             int indice = i;
-            botonesPoner[1][i].onClick.AddListener(() => ClickEnBotonPonerNivel2(indice));
+            // Le pasamos el nivelIndex además del botón pulsado
+            botonesPoner[nivelIndex][i].onClick.AddListener(() => ClickEnBotonPoner(nivelIndex, indice));
         }
 
-        // Limpiar listeners anteriores de botonesPuesto
-        for (int i = 0; i < 4; i++)
+        // 2. Limpiar y configurar botones Puesto (la longitud se detecta sola)
+        int cantidadPuestos = botonesPuesto[nivelIndex].Length;
+        for (int i = 0; i < cantidadPuestos; i++)
         {
-            botonesPuesto[1][i].onClick.RemoveAllListeners();
-        }
-        
-        // Configurar listeners para los 4 botones de respuesta del Nivel 2
-        for (int i = 0; i < 4; i++)
-        {
+            botonesPuesto[nivelIndex][i].onClick.RemoveAllListeners();
             int posicion = i;
-            botonesPuesto[1][i].onClick.AddListener(() => ClickEnBotonPuestoNivel2(posicion));
+            // Le pasamos el nivelIndex además de la posición
+            botonesPuesto[nivelIndex][i].onClick.AddListener(() => ClickEnBotonPuesto(nivelIndex, posicion));
         }
     }
 
-    void ClickEnBotonPonerNivel2(int indiceBotonPoner)
+    void ClickEnBotonPuesto(int nivelIndex, int posicion)
     {
-        // Verificar si este botón ya está seleccionado
-        int posicionEnPuesto = -1;
-        for (int i = 0; i < seleccionesActuales[1].Length; i++)
+        if (bloqueado) return; 
+        
+        // Quitar solo la imagen en esa posición usando el nivel correcto
+        if (seleccionesActuales[nivelIndex][posicion] != -1)
         {
-            if (seleccionesActuales[1][i] == indiceBotonPoner)
+            LimpiarPosicion(nivelIndex, posicion);
+            Debug.Log("Imagen en Respuesta " + posicion + " del Nivel " + (nivelIndex + 1) + " fue eliminada");
+        }
+        else
+        {
+            Debug.Log("No hay nada en la posición " + posicion);
+        }
+    }
+
+    void ClickEnBotonPoner(int nivelIndex, int indiceBotonPoner)
+    {
+        if(bloqueado) return; 
+
+        // Verificar si este botón ya está seleccionado en el nivel actual
+        int posicionEnPuesto = -1;
+        for (int i = 0; i < seleccionesActuales[nivelIndex].Length; i++)
+        {
+            if (seleccionesActuales[nivelIndex][i] == indiceBotonPoner)
             {
                 posicionEnPuesto = i;
                 break;
@@ -545,17 +448,15 @@ public class JuegoDeRutina : MonoBehaviour
 
         if (posicionEnPuesto != -1)
         {
-            // El botón ya está seleccionado, lo removemos
-            QuitarSeleccion(1, posicionEnPuesto);
-            Debug.Log("Botón " + indiceBotonPoner + " removido de la posición " + posicionEnPuesto);
+            Debug.Log("No vale repetir la misma acción, botón " + indiceBotonPoner + " ya está en la posición " + posicionEnPuesto);
         }
         else
         {
             // El botón no está seleccionado, lo añadimos en el siguiente espacio libre
             int siguienteLivre = -1;
-            for (int i = 0; i < seleccionesActuales[1].Length; i++)
+            for (int i = 0; i < seleccionesActuales[nivelIndex].Length; i++)
             {
-                if (seleccionesActuales[1][i] == -1)
+                if (seleccionesActuales[nivelIndex][i] == -1)
                 {
                     siguienteLivre = i;
                     break;
@@ -564,115 +465,100 @@ public class JuegoDeRutina : MonoBehaviour
 
             if (siguienteLivre != -1)
             {
-                AñadirSeleccion(1, siguienteLivre, indiceBotonPoner);
+                AñadirSeleccion(nivelIndex, siguienteLivre, indiceBotonPoner);
                 Debug.Log("Botón " + indiceBotonPoner + " añadido en la posición " + siguienteLivre);
             }
             else
             {
-                Debug.Log("No hay más espacios disponibles en Nivel 2");
+                Debug.Log("No hay más espacios disponibles en Nivel " + (nivelIndex + 1));
             }
         }
     }
-
-    void ClickEnBotonPuestoNivel2(int posicion)
+    IEnumerator RutinaVerificarNivel(int nivel)
     {
-        // Quitar solo la imagen en esa posición
-        if (seleccionesActuales[1][posicion] != -1)
-        {
-            LimpiarPosicion(1, posicion);
-            Debug.Log("Imagen en Respuesta " + posicion + " fue eliminada");
-        }
-        else
-        {
-            Debug.Log("No hay nada en la posición " + posicion);
-        }
-    }
+        bloqueado = true; // 1. Cerramos el candado para que no toquen nada
 
-    // ==================== NIVEL 3 ====================
-    void ConfigurarBotonesNivel3()
-    {
-        // Limpiar listeners anteriores de botonesPoner
-        for (int i = 0; i < 5; i++)
-        {
-            botonesPoner[2][i].onClick.RemoveAllListeners();
-        }
-        
-        // Configurar listeners para los 5 botones del Nivel 3
-        for (int i = 0; i < 5; i++)
-        {
-            int indice = i;
-            botonesPoner[2][i].onClick.AddListener(() => ClickEnBotonPonerNivel3(indice));
-        }
+        // Verificar si las selecciones actuales coinciden con alguna de las respuestas válidas
+        bool esCorrect = false;
 
-        // Limpiar listeners anteriores de botonesPuesto
-        for (int i = 0; i < 5; i++)
+        for (int respuestaIdx = 0; respuestaIdx < ordenesCorrectas[nivel].Length; respuestaIdx++)
         {
-            botonesPuesto[2][i].onClick.RemoveAllListeners();
-        }
-        
-        // Configurar listeners para los 5 botones de respuesta del Nivel 3
-        for (int i = 0; i < 5; i++)
-        {
-            int posicion = i;
-            botonesPuesto[2][i].onClick.AddListener(() => ClickEnBotonPuestoNivel3(posicion));
-        }
-    }
+            int[] respuestaValida = ordenesCorrectas[nivel][respuestaIdx];
+            bool coincide = true;
 
-    void ClickEnBotonPonerNivel3(int indiceBotonPoner)
-    {
-        // Verificar si este botón ya está seleccionado
-        int posicionEnPuesto = -1;
-        for (int i = 0; i < seleccionesActuales[2].Length; i++)
-        {
-            if (seleccionesActuales[2][i] == indiceBotonPoner)
+            for (int i = 0; i < respuestaValida.Length; i++)
             {
-                posicionEnPuesto = i;
+                if (seleccionesActuales[nivel][i] != respuestaValida[i])
+                {
+                    coincide = false;
+                    break;
+                }
+            }
+
+            if (coincide)
+            {
+                esCorrect = true;
                 break;
             }
         }
 
-        if (posicionEnPuesto != -1)
+        // EVALUACIÓN VISUAL
+        if (esCorrect)
         {
-            // El botón ya está seleccionado, lo removemos
-            QuitarSeleccion(2, posicionEnPuesto);
-            Debug.Log("Botón " + indiceBotonPoner + " removido de la posición " + posicionEnPuesto);
-        }
-        else
-        {
-            // El botón no está seleccionado, lo añadimos en el siguiente espacio libre
-            int siguienteLivre = -1;
-            for (int i = 0; i < seleccionesActuales[2].Length; i++)
+            // Mostramos imagen de Bien durante 1 segundo
+            yield return StartCoroutine(MostrarImagenTiempoLimitado(imagenBien, 1f));
+            
+            // Cambiar al siguiente nivel
+            if (nivel + 1 < 3)
             {
-                if (seleccionesActuales[2][i] == -1)
-                {
-                    siguienteLivre = i;
-                    break;
-                }
-            }
-
-            if (siguienteLivre != -1)
-            {
-                AñadirSeleccion(2, siguienteLivre, indiceBotonPoner);
-                Debug.Log("Botón " + indiceBotonPoner + " añadido en la posición " + siguienteLivre);
+                CambiarNivel(nivel + 2); // nivel + 2 porque nivel es 0-indexed pero nivelActual es 1-indexed
             }
             else
             {
-                Debug.Log("No hay más espacios disponibles en Nivel 3");
+                // Mostrar PopUpGanar
+                if (!popUpPendiente)
+                {
+                    popUpPendiente = true;
+                    Invoke("MostrarPopUpGanadoConRetraso", 0.3f);
+                }
             }
-        }
-    }
-
-    void ClickEnBotonPuestoNivel3(int posicion)
-    {
-        // Quitar solo la imagen en esa posición
-        if (seleccionesActuales[2][posicion] != -1)
-        {
-            LimpiarPosicion(2, posicion);
-            Debug.Log("Imagen en Respuesta " + posicion + " fue eliminada");
         }
         else
         {
-            Debug.Log("No hay nada en la posición " + posicion);
+            // Mostramos imagen de Mal durante 1 segundo
+            yield return StartCoroutine(MostrarImagenTiempoLimitado(imagenMal, 1f));
+            
+            restartCounter++;
+            ResetearNivel(nivel);
+            
+            if(restartCounter >= 3)
+            {
+                Invoke("MostrarPopUpGanadoConRetraso", 0.3f);
+            }
+        }
+
+        bloqueado = false; // 4. Abrimos el candado para que puedan volver a jugar
+    }
+    IEnumerator MostrarImagenTiempoLimitado(GameObject imagen, float duracion)
+    {
+        if (imagen == null) yield break;
+        
+        imagen.SetActive(true);
+        yield return new WaitForSeconds(duracion);
+        imagen.SetActive(false);
+    }
+    public void SetValor(bool valor)
+    {
+        if (valor)
+        {
+            nivelActual = 1;
+            ActualizarPaneles();
+            ConfigurarBotonesNivel(0);
+            restartCounter = 0; 
+            for (int i = 0; i < 3; i++)
+            {
+                ResetearNivel(i);
+            }
         }
     }
 }

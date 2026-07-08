@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using TMPro;
+using System.Collections;
 
 public class JuegoDeAnimales : MonoBehaviour
 {
@@ -11,7 +12,8 @@ public class JuegoDeAnimales : MonoBehaviour
     public Button btnValidar;
     public GameObject[] panelesNiveles = new GameObject[3]; // Para los 3 niveles
     public PopUpGanar popUpGanar;
-    public TotalStarsCounter totalStarsCounter;
+    public GameObject imagenBien, imagenMal;
+    private bool bloqueado = false;
     
     // Tracking de selecciones (jagged arrays)
     private bool[][] seleccionados = new bool[3][];
@@ -36,7 +38,7 @@ public class JuegoDeAnimales : MonoBehaviour
     private int[][] respuestasNivel3 = { new int[] { 1, 2, 3, 4 } }; // Vaca (1), León (2), Perro (3), Delfín (4)
 
     private int preguntaActual = 0;
-    private int[] contadorFallos = new int[3];
+    private int restartCounter = 0;
 
     void Start()
     {
@@ -72,8 +74,6 @@ public class JuegoDeAnimales : MonoBehaviour
                     imagenesBoton[nivel] = new Image[botonesAnimales[nivel].Length];
                     coloresOriginales[nivel] = new Color[botonesAnimales[nivel].Length];
                     nombresAnimales[nivel] = new string[botonesAnimales[nivel].Length];
-                    
-                    Debug.Log("✅ Nivel " + (nivel + 1) + ": Se encontraron " + botonesAnimales[nivel].Length + " botones");
                 }
                 else
                 {
@@ -164,11 +164,18 @@ public class JuegoDeAnimales : MonoBehaviour
 
         // Botón Validar
         if (btnValidar != null)
-            btnValidar.onClick.AddListener(ValidarRespuesta);
+        {
+            // Cambiamos a expresión lambda para usar la nueva Corrutina
+            btnValidar.onClick.AddListener(() => {
+                if (!bloqueado) StartCoroutine(RutinaValidarRespuesta());
+            });
+        }
     }
 
     void SeleccionarAnimal(int nivel, int indice)
     {
+        if (bloqueado) return;
+
         if (botonesAnimales[nivel] == null || indice >= botonesAnimales[nivel].Length)
         {
             Debug.LogError("❌ Índice inválido en Nivel " + (nivel + 1));
@@ -194,33 +201,25 @@ public class JuegoDeAnimales : MonoBehaviour
         Debug.Log((seleccionados[nivel][indice] ? "✓" : "✗") + " " + nombreAnimal);
     }
 
-    void ValidarRespuesta()
+    IEnumerator RutinaValidarRespuesta()
     {
+        bloqueado = true; // 1. Cerramos candado
+
         int nivelIndex = nivelActual - 1; // Convertir a índice 0-based
         
         if (botonesAnimales[nivelIndex] == null || botonesAnimales[nivelIndex].Length == 0)
         {
             Debug.LogError("❌ No hay botones en Nivel " + nivelActual);
-            return;
+            bloqueado = false;
+            yield break;
         }
         
         // Recopilar los índices seleccionados del nivel actual
         System.Collections.Generic.List<int> seleccionadosList = new System.Collections.Generic.List<int>();
         for (int i = 0; i < seleccionados[nivelIndex].Length; i++)
         {
-            if (seleccionados[nivelIndex][i])
-                seleccionadosList.Add(i);
+            if (seleccionados[nivelIndex][i]) seleccionadosList.Add(i);
         }
-
-        // Print de lo que ha seleccionado
-        string seleccionadosStr = "";
-        for (int i = 0; i < seleccionadosList.Count; i++)
-        {
-            if (i > 0) seleccionadosStr += ", ";
-            if (seleccionadosList[i] < nombresAnimales[nivelIndex].Length)
-                seleccionadosStr += nombresAnimales[nivelIndex][seleccionadosList[i]];
-        }
-        Debug.Log("📌 Animales seleccionados: " + (seleccionadosStr != "" ? seleccionadosStr : "Ninguno"));
 
         // Obtener la respuesta correcta según el nivel
         int[] respuestaCorrecta = null;
@@ -232,20 +231,15 @@ public class JuegoDeAnimales : MonoBehaviour
             respuestaCorrecta = respuestasNivel3[preguntaActual];
         
         if (respuestaCorrecta == null)
-            return;
-
-        // Print de la respuesta correcta esperada
-        string respuestaCorrectaStr = "";
-        for (int i = 0; i < respuestaCorrecta.Length; i++)
         {
-            if (i > 0) respuestaCorrectaStr += ", ";
-            if (respuestaCorrecta[i] < nombresAnimales[nivelIndex].Length)
-                respuestaCorrectaStr += nombresAnimales[nivelIndex][respuestaCorrecta[i]];
+            bloqueado = false;
+            yield break;
         }
-        Debug.Log("✔️ Respuesta correcta esperada: " + respuestaCorrectaStr);
 
         // Verificar si la selección es correcta
         bool esCorrect = seleccionadosList.Count == respuestaCorrecta.Length;
+        bool vacia = seleccionadosList.Count == 0;
+
         if (esCorrect)
         {
             for (int i = 0; i < respuestaCorrecta.Length; i++)
@@ -258,19 +252,41 @@ public class JuegoDeAnimales : MonoBehaviour
             }
         }
 
+        // EVALUACIÓN FINAL
         if (esCorrect)
         {
-            Debug.Log("✅ ¡Respuesta correcta!");
+            yield return StartCoroutine(MostrarImagenTiempoLimitado(imagenBien, 1f));
             PasarAlSiguienteNivel();
+        }
+        else if (vacia)
+        {
+            Debug.Log("⚠️ No has seleccionado ningún animal");
+            // No gastamos turno ni mostramos imagen mal si no ha marcado nada,
+            // simplemente le dejamos volver a intentar.
         }
         else
         {
-            Debug.Log("❌ Respuesta incorrecta");
-            contadorFallos[nivelIndex]++;
+            yield return StartCoroutine(MostrarImagenTiempoLimitado(imagenMal, 1f));
+            
+            restartCounter++;
             LimpiarSeleccion();
+            
+            if(restartCounter >= 3)
+            {
+                Invoke("MostrarPopUpGanador", 0.3f);
+            }
         }
-    }
 
+        bloqueado = false; // 4. Abrimos candado
+    }
+    IEnumerator MostrarImagenTiempoLimitado(GameObject imagen, float duracion)
+    {
+        if (imagen == null) yield break;
+        
+        imagen.SetActive(true);
+        yield return new WaitForSeconds(duracion);
+        imagen.SetActive(false);
+    }
     void PasarAlSiguienteNivel()
     {
         if (nivelActual < 3)
@@ -282,8 +298,6 @@ public class JuegoDeAnimales : MonoBehaviour
         }
         else
         {
-            // Juego completado
-            Debug.Log("🎉 ¡JUEGO COMPLETADO!");
             Invoke("MostrarPopUpGanador", 0.3f);
         }
     }
@@ -338,7 +352,6 @@ public class JuegoDeAnimales : MonoBehaviour
     {
         if (textoPregunta == null)
         {
-            Debug.LogWarning("⚠️ textoPregunta no asignado");
             return;
         }
         
@@ -373,31 +386,42 @@ public class JuegoDeAnimales : MonoBehaviour
     {
         if (popUpGanar == null)
         {
-            Debug.LogError("❌ PopUpGanar no asignado");
             return;
         }
 
         popUpGanar.SetNombreJuego("Animales");
-        int fallosTotales = contadorFallos[0] + contadorFallos[1] + contadorFallos[2];
-        string mensaje = "";
+        string mensajeGanado = "";
 
-        if (fallosTotales == 0)
-            mensaje = "¡Felicidades! ¡Perfecto sin errores!";
-        else if (fallosTotales <= 3)
-            mensaje = "¡Muy bien! Solo " + fallosTotales + " error/es";
-        else
-            mensaje = "¡Completado! Cometiste " + fallosTotales + " errores";
-
-        popUpGanar.MostrarPopUpGanado(fallosTotales, mensaje);
-
-        if (totalStarsCounter != null)
+        if (restartCounter == 0)
         {
-            int estrellas = (fallosTotales == 0) ? 3 : (fallosTotales <= 3) ? 2 : 1;
-            totalStarsCounter.AgregarEstrellas(estrellas, "Animales");
+            mensajeGanado = "¡Felicidades! ¡Has completado todos los niveles sin errores!";
+        }
+        else if (restartCounter == 1)
+        {
+            mensajeGanado = "¡Bien hecho! ¡Has completado todos los niveles con solo 1 error!";
+        }
+        else if (restartCounter == 2)
+        {
+            mensajeGanado = "¡Lo lograste! Completaste todos los niveles con " + restartCounter + " errores.";
         }
         else
         {
-            Debug.LogWarning("⚠️ TotalStarsCounter no asignado");
+            mensajeGanado = "Cometiste " + restartCounter + " errores. ¡Intenta mejorar!";
+        }
+
+        popUpGanar.MostrarPopUpGanado(restartCounter, mensajeGanado); 
+    }
+
+    public void SetValor(bool valor)
+    {
+        if (valor)
+        {
+            // Reiniciar estado del juego
+            nivelActual = 1;
+            preguntaActual = 0;
+            restartCounter = 0;
+            LimpiarSeleccion();
+            CambiarNivel(nivelActual);
         }
     }
 }

@@ -151,8 +151,6 @@ RectTransform:
   m_Children:
   - {fileID: 1377850330}
   - {fileID: 1865280605}
-  - {fileID: 538502875}
-  - {fileID: 975802621}
   m_Father: {fileID: 731965751}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -173,14 +171,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.35686275, g: 0.68235296, b: 0.7647059, a: 0.5137255}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: b3825fff575e2f84bad8621cef87a62f, type: 3}
+  m_Sprite: {fileID: -7491609004260092408, guid: a752c52854cae04498146e97bf43dbf2, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -197,81 +195,6 @@ CanvasRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 331171873}
-  m_CullTransparentMesh: 1
---- !u!1 &538502874
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 538502875}
-  - component: {fileID: 538502877}
-  - component: {fileID: 538502876}
-  m_Layer: 5
-  m_Name: Image
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &538502875
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 538502874}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 331171874}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0}
-  m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: -310.03, y: 73.509}
-  m_SizeDelta: {x: 179.94, y: 147.0178}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &538502876
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 538502874}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: cfd2fa28858f18142ac1cc469ab62837, type: 3}
-  m_Type: 3
-  m_PreserveAspect: 1
-  m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
-  m_FillClockwise: 1
-  m_FillOrigin: 0
-  m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
---- !u!222 &538502877
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 538502874}
   m_CullTransparentMesh: 1
 --- !u!1 &731965747
 GameObject:
@@ -375,78 +298,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
---- !u!1 &975802620
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 975802621}
-  - component: {fileID: 975802623}
-  - component: {fileID: 975802622}
-  m_Layer: 5
-  m_Name: RawImage
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &975802621
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 975802620}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 331171874}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 1, y: 0}
-  m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -63.615967, y: 63.602783}
-  m_SizeDelta: {x: 127.23212, y: 127.205505}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &975802622
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 975802620}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1344c3c82d62a2a41a3576d8abb8e3ea, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_Texture: {fileID: 2800000, guid: 0ff0a6cd0d317c84f852b324b772fe86, type: 3}
-  m_UVRect:
-    serializedVersion: 2
-    x: 0
-    y: 0
-    width: 1
-    height: 1
---- !u!222 &975802623
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 975802620}
-  m_CullTransparentMesh: 1
 --- !u!1 &1377850329
 GameObject:
   m_ObjectHideFlags: 0
@@ -483,8 +334,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 45.83618, y: -30.174316}
-  m_SizeDelta: {x: 91.6724, y: 60.3586}
+  m_AnchoredPosition: {x: 40, y: -30}
+  m_SizeDelta: {x: 80, y: 60}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1377850332
 MonoBehaviour:
@@ -820,8 +671,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 13.000977, y: 41}
-  m_SizeDelta: {x: -333.8778, y: -293.6996}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: -304.3221, y: -185.5257}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1865280606
 MonoBehaviour:
@@ -843,13 +694,18 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "Bienvenido a Project J, dise\xF1ada para mejorar tu comprensi\xF3n de
-    conceptos y pensamientos computacionales. \n\nA trav\xE9s de una serie de misiones
-    y juegos interactivos, esta app te ayudar\xE1 a aprender de manera m\xE1s efectiva
-    temas fundamentales de la computaci\xF3n. \n\nCada desaf\xEDo est\xE1 creado
-    para estimular tu mente y facilitar tu aprendizaje sobre algoritmos, l\xF3gicas,
-    matem\xE1ticas y comprender componentes de hardware y software. \n\nDisfruta
-    de esta experiencia educativa mientras te diviertes jugando."
+  m_text: "\xA1Bienvenido a Project J+!\n\nProject J+ es una versi\xF3n ampliada
+    y mejorada de Project J, desarrollada para ofrecer una experiencia de aprendizaje
+    m\xE1s completa, accesible y divertida.\n\nEsta aplicaci\xF3n incorpora nuevos
+    juegos, m\xE1s funcionalidades y mejoras en la interfaz, con el objetivo de ayudar
+    a desarrollar el pensamiento computacional y otras habilidades cognitivas mediante
+    actividades interactivas.\n\nAdem\xE1s, Project J+ ha sido dise\xF1ado prestando
+    especial atenci\xF3n a la accesibilidad y la usabilidad para ni\xF1os con neurodivergencias,
+    ofreciendo un entorno sencillo, intuitivo y adaptado a sus necesidades de aprendizaje.\n\nA
+    trav\xE9s de diferentes retos y niveles, los jugadores podr\xE1n trabajar habilidades
+    como la l\xF3gica, la resoluci\xF3n de problemas, la memoria, la atenci\xF3n,
+    el reconocimiento de patrones y conceptos b\xE1sicos relacionados con la inform\xE1tica.\n\n\xA1Aprende,
+    juega y supera todos los desaf\xEDos de Project J+!"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -858,8 +714,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+    rgba: 4278190080
+  m_fontColor: {r: 0, g: 0, b: 0, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -876,14 +732,14 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 10.65
+  m_fontSize: 11.65
   m_fontSizeBase: 50
   m_fontWeight: 400
   m_enableAutoSizing: 1
   m_fontSizeMin: 0
   m_fontSizeMax: 100
   m_fontStyle: 1
-  m_HorizontalAlignment: 1
+  m_HorizontalAlignment: 8
   m_VerticalAlignment: 256
   m_textAlignment: 65535
   m_characterSpacing: 0

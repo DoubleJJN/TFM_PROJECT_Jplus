@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
@@ -16,6 +17,7 @@ public class MoverRana : MonoBehaviour
     public PopUpGanar popUpGanar;
     public TextMeshProUGUI textoNivel;
     int restartCounter = 0;
+    public GameObject imagenBien, imagenMal;
     
     // Sistema de niveles
     public int nivelActual = 1;
@@ -240,7 +242,7 @@ public class MoverRana : MonoBehaviour
     {
         restartCounter++;  // Incrementar contador de errores
         UnityEngine.Debug.Log("Errores acumulados: " + restartCounter);
-        
+        StartCoroutine(MostrarImagenTiempoLimitado(imagenMal, 1f));
         // Reinicializar posiciones sin resetear el contador
         posiciones = new int[6];
         for (int i = 0; i < 6; i++) posiciones[i] = -1;
@@ -279,7 +281,7 @@ public class MoverRana : MonoBehaviour
             }
         }
 
-        if(restartCounter > 3)
+        if(restartCounter == 3)
         {
             Invoke("MostrarPopUpGanadoConRetraso", 0.5f);
         }
@@ -288,6 +290,14 @@ public class MoverRana : MonoBehaviour
     
     void AvanzarNivel()
     {
+        // Método void normal: Usamos StartCoroutine para llamar al IEnumerator
+        StartCoroutine(RutinaAvanzarNivel());
+    }
+
+    IEnumerator RutinaAvanzarNivel()
+    {
+        // Al ser un IEnumerator, aquí SÍ podemos usar yield return
+        yield return StartCoroutine(MostrarImagenTiempoLimitado(imagenBien, 1f));
         NivelSiguiente();
     }
 
@@ -375,5 +385,13 @@ public class MoverRana : MonoBehaviour
         {
             InicializarNivel(nivelActual + 1);
         }
+    }
+    IEnumerator MostrarImagenTiempoLimitado(GameObject imagen, float duracion)
+    {
+        if (imagen == null) yield break;
+        
+        imagen.SetActive(true);
+        yield return new WaitForSeconds(duracion);
+        imagen.SetActive(false);
     }
 }

@@ -203,7 +203,7 @@ public class MovimientoEnLaberinto : MonoBehaviour
         }
         
         // Si ha cometido más de 3 errores, mostrar popup
-        if (esPorFallo && restartCounter > 3)
+        if (esPorFallo && restartCounter == 3)
         {
             Invoke("MostrarPopUpGanadoConRetraso", 0.5f);
             return;  // No reiniciar, solo mostrar popup

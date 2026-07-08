@@ -10,6 +10,8 @@ public class JuegoDeQuiz : MonoBehaviour
     public Image img1, img2, img3; // Componentes Image para mostrar sprites
     public ControlarQuiz controlarQuiz;
     public int restartCounter = 0;
+    public GameObject imagenBien, imagenMal;
+    private bool estaComprobando = false;
     void Start()
     {
         controlarQuiz = GameObject.Find("Panel").GetComponent<ControlarQuiz>();
@@ -73,7 +75,7 @@ public class JuegoDeQuiz : MonoBehaviour
         }
     }
 
-    public void comprobar(int respuesta, Button botonPresionado)
+    /*public void comprobar(int respuesta, Button botonPresionado)
     {
         bool esCorrecto = respuesta == controlarQuiz.preguntas[controlarQuiz.i].respuestaCorrecta;
 
@@ -84,7 +86,6 @@ public class JuegoDeQuiz : MonoBehaviour
         }
         else
         {
-            restartCounter++;
             StartCoroutine(ChangeButtonColor(botonPresionado, Color.red));
             controlarQuiz.preguntasFallidas[controlarQuiz.i] = true;
         }
@@ -105,6 +106,11 @@ public class JuegoDeQuiz : MonoBehaviour
             Invoke("MostrarPopUpGanadoConRetraso", 0.3f);
         }else if (controlarQuiz.i == controlarQuiz.preguntas.Length)
         {
+            restartCounter++;
+            if(restartCounter > 3)
+            {
+                Invoke("MostrarPopUpGanadoConRetraso", 0.3f);
+            }
             for(int j = 0; j<controlarQuiz.preguntasFallidas.Length; j++)
             {
                 if(controlarQuiz.preguntasFallidas[j] == true)
@@ -117,22 +123,26 @@ public class JuegoDeQuiz : MonoBehaviour
             ActualizarImagenesBotones();
         }
     }
-
+    */
     void MostrarPopUpGanadoConRetraso()
     {
         popUpGanar.SetNombreJuego("Quiz");
         string mensajeGanado = "";
         if (restartCounter == 0)
         {
-            mensajeGanado = "¡Felicidades! Has ganado sin cometer errores.";
+            mensajeGanado = "¡Felicidades! ¡Has completado todos los niveles sin errores!";
         }
         else if (restartCounter == 1)
         {
-            mensajeGanado = "¡Bien hecho! Has ganado con solo un error.";
+            mensajeGanado = "¡Bien hecho! ¡Has completado todos los niveles con solo 1 error!";
+        }
+        else if (restartCounter == 2)
+        {
+            mensajeGanado = "¡Lo lograste! Completaste todos los niveles con " + restartCounter + " errores.";
         }
         else
         {
-            mensajeGanado = "Has ganado, pero cometiste algunos errores. ¡Sigue practicando!";
+            mensajeGanado = "Cometiste " + restartCounter + " errores. ¡Intenta mejorar!";
         }
         popUpGanar.MostrarPopUpGanado(restartCounter, mensajeGanado);
     }
@@ -153,5 +163,97 @@ public class JuegoDeQuiz : MonoBehaviour
         }
         controlarQuiz.CambiarPreguntas();
         ActualizarImagenesBotones();
+    }
+    public void comprobar(int respuesta, Button botonPresionado)
+    {
+        // Si ya estamos mostrando una imagen, ignoramos el clic
+        if (estaComprobando) return; 
+
+        StartCoroutine(RutinaComprobar(respuesta, botonPresionado));
+    }
+
+    IEnumerator RutinaComprobar(int respuesta, Button botonPresionado)
+    {
+        estaComprobando = true; // Cerramos el candado
+        
+        bool esCorrecto = respuesta == controlarQuiz.preguntas[controlarQuiz.i].respuestaCorrecta;
+
+        if (esCorrecto)
+        {
+            StartCoroutine(ChangeButtonColor(botonPresionado, Color.green));
+            controlarQuiz.preguntasFallidas[controlarQuiz.i] = false;
+            
+            // Esperamos 1 segundo mostrando la imagen Bien ANTES de cambiar la pregunta
+            yield return StartCoroutine(MostrarImagenTiempoLimitado(imagenBien, 1f));
+        }
+        else
+        {
+            StartCoroutine(ChangeButtonColor(botonPresionado, Color.red));
+            controlarQuiz.preguntasFallidas[controlarQuiz.i] = true;
+            
+            // Esperamos 1 segundo mostrando la imagen Mal ANTES de cambiar la pregunta
+            yield return StartCoroutine(MostrarImagenTiempoLimitado(imagenMal, 1f));
+        }
+
+        // --- A PARTIR DE AQUÍ CAMBIAMOS A LA SIGUIENTE PREGUNTA ---
+        controlarQuiz.i++;
+        
+        if (controlarQuiz.i < controlarQuiz.preguntas.Length)
+        {
+            controlarQuiz.CambiarPreguntas();
+            ActualizarImagenesBotones();
+        }
+
+        // Saltamos las preguntas que ya estaban correctas
+        while (controlarQuiz.i < controlarQuiz.preguntasFallidas.Length && controlarQuiz.preguntasFallidas[controlarQuiz.i] == false)
+        {
+            controlarQuiz.i++;
+            if (controlarQuiz.i < controlarQuiz.preguntas.Length)
+            {
+                controlarQuiz.CambiarPreguntas();
+                ActualizarImagenesBotones();
+            }
+        }
+
+        Debug.Log(controlarQuiz.i);
+
+        if (controlarQuiz.NoHayPreguntasFallidas())
+        {
+            Invoke("MostrarPopUpGanadoConRetraso", 0.3f);
+        }
+        else if (controlarQuiz.i >= controlarQuiz.preguntas.Length)
+        {
+            restartCounter++;
+            if(restartCounter == 3)
+            {
+                Invoke("MostrarPopUpGanadoConRetraso", 0.3f);
+            }
+            else
+            {
+                // Buscamos la primera fallida para repetirla
+                for(int j = 0; j < controlarQuiz.preguntasFallidas.Length; j++)
+                {
+                    if(controlarQuiz.preguntasFallidas[j] == true)
+                    {
+                        controlarQuiz.i = j;
+                        break;
+                    }
+                }
+                controlarQuiz.CambiarPreguntas();
+                ActualizarImagenesBotones();
+            }
+        }
+
+        estaComprobando = false; // Abrimos el candado para la siguiente pregunta
+    }
+
+    IEnumerator MostrarImagenTiempoLimitado(GameObject imagen, float duracion)
+    {
+        if (imagen != null)
+        {
+            imagen.SetActive(true);
+            yield return new WaitForSeconds(duracion);
+            imagen.SetActive(false);
+        }
     }
 }

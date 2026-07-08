@@ -75,10 +75,10 @@ public class Escenas : MonoBehaviour
     {
         if (string.IsNullOrEmpty(usuarioLogueado))
             return null;
-        
+
         string streamingPath = Path.Combine(Application.streamingAssetsPath, "users.json");
         string persistentPath = Path.Combine(Application.persistentDataPath, "users.json");
-        
+
         // Intento 1: persistentDataPath (donde UserManager GUARDA en Editor)
         try
         {
@@ -86,7 +86,7 @@ public class Escenas : MonoBehaviour
             {
                 string json = System.IO.File.ReadAllText(persistentPath, System.Text.Encoding.UTF8);
                 UserDatabase database = JsonUtility.FromJson<UserDatabase>(json);
-                
+
                 if (database != null && database.users != null)
                 {
                     foreach (User user in database.users)
@@ -103,7 +103,7 @@ public class Escenas : MonoBehaviour
         {
             Debug.LogWarning("⚠️ Error al leer persistentDataPath: " + e.Message);
         }
-        
+
         // Intento 2: StreamingAssets (fallback)
         try
         {
@@ -111,7 +111,7 @@ public class Escenas : MonoBehaviour
             {
                 string json = System.IO.File.ReadAllText(streamingPath, System.Text.Encoding.UTF8);
                 UserDatabase database = JsonUtility.FromJson<UserDatabase>(json);
-                
+
                 if (database != null && database.users != null)
                 {
                     foreach (User user in database.users)
@@ -128,15 +128,12 @@ public class Escenas : MonoBehaviour
         {
             Debug.LogWarning("⚠️ Error al leer persistentDataPath: " + e.Message);
         }
-        
-        // FALLBACK 3: UserManager
+
         if (userManager != null)
         {
-            Debug.Log("🔍 Intentando UserManager");
             User userFromManager = userManager.GetUser(usuarioLogueado);
             if (userFromManager != null)
             {
-                Debug.Log("✓ Usuario encontrado en UserManager - tresEnRayaScore=" + userFromManager.tresEnRayaScore + ", total=" + userFromManager.puntuacion);
                 return userFromManager;
             }
         }

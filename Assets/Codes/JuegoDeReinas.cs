@@ -25,6 +25,8 @@ public class JuegoDeReinas : MonoBehaviour// hay muchas cosas que arreglar de es
     int combinacionesPosibles = 3;
     public Dictionary<int, int[]> mapaDeRepeticiones = new Dictionary<int, int[]>();
     public TMP_Text combosRestantes;
+    private bool bloqueado = false;
+    public GameObject imagenBien, imagenMal;
 
     void Start()
     {
@@ -72,69 +74,9 @@ public class JuegoDeReinas : MonoBehaviour// hay muchas cosas que arreglar de es
             });
         }
         btnListo.onClick.AddListener(() => {
-            if (comprobarTablero())
-            {
-                if (mapaDeRepeticiones.Count == 0)
-                {
-                    Debug.Log(posicionesReinas[0] + " " + posicionesReinas[1] + " " + posicionesReinas[2] + " " + posicionesReinas[3] + " " + posicionesReinas[4]);
-                    combinacionesPosibles--;
-                    mapaDeRepeticiones.Add(combinacionesPosibles, posicionesReinas.Clone() as int[]);
-                    Debug.Log("Tablero correcto, quedan combinaciones posibles: " + combinacionesPosibles);
-                    combosRestantes.text = "Combos restantes: " + combinacionesPosibles;
-                    SetValor(true);
-                }
-                else
-                {
-                    Debug.Log(posicionesReinas[0] + " " + posicionesReinas[1] + " " + posicionesReinas[2] + " " + posicionesReinas[3] + " " + posicionesReinas[4]);
-                    int vecesRepetidos = 0;
+            if (bloqueado) return; 
 
-                    foreach (var lista in mapaDeRepeticiones.Values)
-                    {
-                       for(int i=0; i<lista.Length; i++)
-                        {
-                            if (lista[i] == posicionesReinas[i])
-                            {
-                                vecesRepetidos++;
-                                Debug.Log(lista[i] + "==" + posicionesReinas[i] + " en la columna " + i);
-                            }
-                        }
-                        Debug.Log("Veces repetidos: " + vecesRepetidos);
-                        if(vecesRepetidos == 5)
-                        {
-                            break;
-                        } 
-                    }
-                    if (vecesRepetidos != 5)
-                    {
-                        combinacionesPosibles--;
-                        if (combinacionesPosibles > 0)
-                        {
-                            mapaDeRepeticiones.Add(combinacionesPosibles, posicionesReinas.Clone() as int[]);
-                            Debug.Log("Tablero correcto, quedan combinaciones posibles: " + combinacionesPosibles);
-                            combosRestantes.text = "Combos restantes: " + combinacionesPosibles;
-                            SetValor(true);
-                        }
-                        else
-                        {
-                            Debug.Log("Tablero correcto");
-                            combosRestantes.text = "Combos restantes: " + combinacionesPosibles;
-                            Invoke("MostrarPopUpGanadoConRetraso", 0.3f);
-                        }
-                    }
-                    else
-                    {
-                        Debug.Log("Tablero repetido");
-                        restartCounter++;
-                        SetValor(true);
-                    }
-                }
-            }
-            else
-            {
-                Debug.Log("Tablero incorrecto");
-                restartCounter++;
-                SetValor(true);
-            }
+            StartCoroutine(RutinaComprobarTablero());
         });
 
     }
@@ -166,15 +108,19 @@ public class JuegoDeReinas : MonoBehaviour// hay muchas cosas que arreglar de es
         string mensajeGanado = "";
         if (restartCounter == 0)
         {
-            mensajeGanado = "¡Felicidades! Has ganado sin cometer errores.";
+            mensajeGanado = "¡Felicidades! ¡Has completado todos los niveles sin errores!";
         }
         else if (restartCounter == 1)
         {
-            mensajeGanado = "¡Bien hecho! Has ganado con solo un error.";
+            mensajeGanado = "¡Bien hecho! ¡Has completado todos los niveles con solo 1 error!";
+        }
+        else if (restartCounter == 2)
+        {
+            mensajeGanado = "¡Lo lograste! Completaste todos los niveles con " + restartCounter + " errores.";
         }
         else
         {
-            mensajeGanado = "¡Has ganado! Pero has cometido varios errores.";
+            mensajeGanado = "Cometiste " + restartCounter + " errores. ¡Intenta mejorar!";
         }
         popUpGanar.MostrarPopUpGanado(restartCounter, mensajeGanado);
     }
@@ -266,6 +212,94 @@ public class JuegoDeReinas : MonoBehaviour// hay muchas cosas que arreglar de es
             }
         }
         return true;
+    }
+
+    IEnumerator RutinaComprobarTablero()
+    {
+        // PEQUEÑO ESCUDO: Comprobar si faltan reinas por colocar
+        // (Si no hacemos esto, la posición -1 romperá el juego)
+        for (int i = 0; i < posicionesReinas.Length; i++)
+        {
+            if (posicionesReinas[i] == -1)
+            {
+                Debug.LogWarning("¡Faltan reinas por colocar!");
+                yield break; // Cancelamos la rutina sin gastar vidas ni mostrar imágenes
+            }
+        }
+
+        bloqueado = true; // 1. Cerramos candado
+
+        if (comprobarTablero())
+        {
+            // Primero, miramos si el tablero ya estaba repetido
+            bool esRepetido = false;
+            foreach (var lista in mapaDeRepeticiones.Values)
+            {
+                int vecesRepetidos = 0;
+                for(int i = 0; i < lista.Length; i++)
+                {
+                    if (lista[i] == posicionesReinas[i]) vecesRepetidos++;
+                }
+                
+                if (vecesRepetidos == 5)
+                {
+                    esRepetido = true;
+                    break;
+                }
+            }
+
+            if (!esRepetido)
+            {
+                // ¡TABLERO CORRECTO Y NUEVO!
+                yield return StartCoroutine(MostrarImagenTiempoLimitado(imagenBien, 1f));
+                
+                combinacionesPosibles--;
+                if (combinacionesPosibles > 0)
+                {
+                    mapaDeRepeticiones.Add(combinacionesPosibles, posicionesReinas.Clone() as int[]);
+                    Debug.Log("Tablero correcto, quedan: " + combinacionesPosibles);
+                    combosRestantes.text = "Combos restantes: " + combinacionesPosibles;
+                    SetValor(true); // Reinicia posiciones
+                }
+                else
+                {
+                    // ¡HA GANADO EL JUEGO!
+                    combosRestantes.text = "Combos restantes: " + combinacionesPosibles;
+                    Invoke("MostrarPopUpGanadoConRetraso", 0.3f);
+                }
+            }
+            else
+            {
+                // TABLERO REPETIDO (Es un error)
+                Debug.Log("Tablero repetido");
+                yield return StartCoroutine(MostrarImagenTiempoLimitado(imagenMal, 1f));
+                restartCounter++;
+                SetValor(true);
+            }
+        }
+        else
+        {
+            // TABLERO INCORRECTO (Se comen entre ellas)
+            Debug.Log("Tablero incorrecto");
+            yield return StartCoroutine(MostrarImagenTiempoLimitado(imagenMal, 1f));
+            restartCounter++;
+            SetValor(true);
+        }
+
+        bloqueado = false; // 4. Abrimos candado para el siguiente intento
+        if(restartCounter == 3)
+        {
+            Invoke("MostrarPopUpGanadoConRetraso", 0.3f);
+        }
+    }
+
+    IEnumerator MostrarImagenTiempoLimitado(GameObject imagen, float duracion)
+    {
+        if (imagen == null) yield break;
+        
+        imagen.SetActive(true);
+        yield return new WaitForSeconds(duracion);
+        imagen.SetActive(false);
     }
 
 }

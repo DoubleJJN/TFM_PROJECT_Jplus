@@ -13,11 +13,13 @@ public class GameSetting : MonoBehaviour
     public JuegoDeQuiz resetearQuiz;
     public OrdenarBolasListas resetearOrdenar;
     public JuegoDeReinas resetearAjedrez;
+    public JuegoDeAnimales resetearAnimales;
+    public JuegoDeRutina resetearRutina;
+    public JuegoDePuzzle resetearPuzzle;
     public Button btnReiniciar; // Haz estos campos públicos
    // public Button btnAyuda;
     public Button btnCancelar;
     public Button btnSalir;
-
     public Button CerrarSesion;
     void Start()
     {
@@ -47,7 +49,12 @@ public class GameSetting : MonoBehaviour
             resetearOrdenar.SetValor(true);
         if(sceneName == "GameAjedrez")
             resetearAjedrez.SetValor(true);
-            
+        if(sceneName == "GameAnimales")
+            resetearAnimales.SetValor(true);
+        if(sceneName == "GameRutina")
+            resetearRutina.SetValor(true);
+        if(sceneName == "GamePuzzle")
+            resetearPuzzle.SetValor(true);
         OcultarPopUp();
     }
 
@@ -66,6 +73,12 @@ public class GameSetting : MonoBehaviour
             resetearOrdenar.SetValor(true);
         if (sceneName == "GameAjedrez")
             resetearAjedrez.SetValor(true);
+        if (sceneName == "GameAnimales")
+            resetearAnimales.SetValor(true);
+        if(sceneName == "GameRutina")
+            resetearRutina.SetValor(true);
+        if(sceneName == "GamePuzzle")
+            resetearPuzzle.SetValor(true);
         SceneManager.LoadScene("MenuJuego");
     }
 

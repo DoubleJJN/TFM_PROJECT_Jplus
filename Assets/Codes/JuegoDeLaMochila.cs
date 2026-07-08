@@ -20,7 +20,7 @@ public class JuegoDeLaMochila : MonoBehaviour
     int restartCounter = 0;
     public static bool ayudado = false;
     List<int> almacenElementos = new List<int>();//aqui guarda indices
-    
+    public GameObject imagenBien, imagenMal;
 
     void Start()
     {
@@ -40,21 +40,7 @@ public class JuegoDeLaMochila : MonoBehaviour
         }
         listoBtn.onClick.AddListener(() =>
         {
-            if(comprobarMochila()==true)
-                if(nivel < 3)
-                {
-                    AvanzarNivel();
-                }
-                else
-                    Invoke("MostrarPopUpGanadoConRetraso", 0.3f);
-            else
-            {
-                restartCounter++;
-                if(restartCounter > 3)
-                {
-                    Invoke("MostrarPopUpGanadoConRetraso", 0.3f);
-                }
-            }
+            StartCoroutine(RutinaBotonListo());
         });
 
         Debug.Log("Peso máximo optimizado: " + pesoMaximoOptimizadoWrapper());
@@ -264,6 +250,45 @@ public class JuegoDeLaMochila : MonoBehaviour
                 elementosBtn[i].GetComponent<Image>().color = Color.white;
             }
             almacenElementos.Clear();
+        }
+    }
+    IEnumerator MostrarImagenTiempoLimitado(GameObject imagen, float duracion)
+    {
+        if (imagen == null) yield break;
+        
+        imagen.SetActive(true);
+        yield return new WaitForSeconds(duracion);
+        imagen.SetActive(false);
+    }
+
+    IEnumerator RutinaBotonListo()
+    {
+        bool esCorrecto = comprobarMochila();
+
+        if (esCorrecto)
+        {
+            yield return StartCoroutine(MostrarImagenTiempoLimitado(imagenBien, 1f));
+            if(nivel < 3)
+            {
+                AvanzarNivel();
+            }
+            else
+            {
+                Invoke("MostrarPopUpGanadoConRetraso", 0.3f); 
+            }
+        }
+        else
+        {
+            foreach (int index in almacenElementos)
+            {
+                StartCoroutine(ChangeButtonColor(elementosBtn[index], Color.red));
+            }
+            yield return StartCoroutine(MostrarImagenTiempoLimitado(imagenMal, 1f));
+            restartCounter++;
+            if(restartCounter == 3)
+            {
+                Invoke("MostrarPopUpGanadoConRetraso", 0.3f);
+            }
         }
     }
 }

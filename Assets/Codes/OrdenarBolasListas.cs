@@ -19,6 +19,8 @@ public class OrdenarBolasListas : MonoBehaviour
     public Dictionary<int, int[]> mapaNiveles = new Dictionary<int, int[]>();
     int[] posicionesActuales = new int[6];
     int[] objetivoFinal = { 0, 1, 2, 3, 4, 5 };
+    public GameObject imagenBien, imagenMal;
+    private bool bloqueado = false;
 
     void Start()
     {
@@ -107,6 +109,8 @@ public class OrdenarBolasListas : MonoBehaviour
 
     void comprobarPosicionBola(Button bola1, Button bola2,int iBola1, int iBola2)//bolas y que número de bola quiero mover
     {
+        if (bloqueado) return;
+
         int indexBola1 = iBola1; 
         int indexBola2 = iBola2;
         
@@ -119,24 +123,6 @@ public class OrdenarBolasListas : MonoBehaviour
                 pasos--;
                 pasosRestantes.text = "Pasos restantes: " + pasos;
             }
-            else
-            {
-                restartCounter++;
-                nivel = 1;
-                for (int i = 0; i < posicionesActuales.Length; i++)
-                {
-                    posicionesActuales[i] = mapaNiveles[nivel][i];
-                }
-                pasos = 6;
-                pasosRestantes.text = "Pasos restantes: " + pasos;
-                niveles.text = "Nivel: " + nivel;
-                ColocarBolas();
-                /*pasos = 6;
-                pasosRestantes.text = "Pasos restantes: " + pasos;
-                nivel = 1;*/
-                //setValor(true);
-                //ColocarBolas();
-            }
             int aux = 0;
             for (int j = 0; j <objetivoFinal.Length ; j++)
             {
@@ -148,22 +134,12 @@ public class OrdenarBolasListas : MonoBehaviour
             Debug.Log("aux: "+aux+ "Posiciones actuales: "+posicionesActuales[0]+" "+posicionesActuales[1]+" "+posicionesActuales[2]+" "+posicionesActuales[3]+" "+posicionesActuales[4]+" "+posicionesActuales[5]);
             if (aux == 6)
             {
-                if (nivel == 3)
-                {
-                    Invoke("MostrarPopUpGanadoConRetraso", 0.3f);
-                }
-                else
-                {
-                    nivel++;
-                    for (int i = 0; i < posicionesActuales.Length; i++)
-                    {
-                        posicionesActuales[i] = mapaNiveles[nivel][i];
-                    }
-                    ColocarBolas();
-                    pasos = 6;
-                    pasosRestantes.text = "Pasos restantes: " + pasos;
-                    niveles.text = "Nivel: " + nivel;
-                }
+                StartCoroutine(RutinaGanar());
+            }                
+            else if(pasos == 0 && aux != 6)
+            {
+                StartCoroutine(RutinaPerder());
+                return;
             }
         }
         else{
@@ -177,15 +153,19 @@ public class OrdenarBolasListas : MonoBehaviour
         string mensajeGanado = "";
         if (restartCounter == 0)
         {
-            mensajeGanado = "¡Felicidades! Has ganado la partida perfectamente";
+            mensajeGanado = "¡Felicidades! ¡Has completado todos los niveles sin errores!";
         }
         else if (restartCounter == 1)
         {
-            mensajeGanado = "¡Bien hecho! Has ganado la partida con 2 estrellas.";
+            mensajeGanado = "¡Bien hecho! ¡Has completado todos los niveles con solo 1 error!";
+        }
+        else if (restartCounter == 2)
+        {
+            mensajeGanado = "¡Lo lograste! Completaste todos los niveles con " + restartCounter + " errores.";
         }
         else
         {
-            mensajeGanado = "Has ganado la partida con 1 estrella. ¡Sigue intentándolo para mejorar tu puntuación!";
+            mensajeGanado = "Cometiste " + restartCounter + " errores. ¡Intenta mejorar!";
         }
         popUpGanar.MostrarPopUpGanado(restartCounter, mensajeGanado);
     }
@@ -201,5 +181,62 @@ public class OrdenarBolasListas : MonoBehaviour
         pasos = 6;
         pasosRestantes.text = "Pasos restantes: " + pasos;
         niveles.text = "Nivel: " + nivel;
+    }
+    IEnumerator MostrarImagenTiempoLimitado(GameObject imagen, float duracion)
+    {
+        if (imagen == null) yield break;
+        
+        imagen.SetActive(true);
+        yield return new WaitForSeconds(duracion);
+        imagen.SetActive(false);
+    }
+    IEnumerator RutinaGanar()
+    {
+        bloqueado = true; // Bloquea los clics
+        yield return StartCoroutine(MostrarImagenTiempoLimitado(imagenBien, 1f));
+        
+        // TU CÓDIGO ORIGINAL INTACTO:
+        if (nivel == 3)
+        {
+            Invoke("MostrarPopUpGanadoConRetraso", 0.3f);
+        }
+        else
+        {
+            nivel++;
+            for (int i = 0; i < posicionesActuales.Length; i++)
+            {
+                posicionesActuales[i] = mapaNiveles[nivel][i];
+            }
+            ColocarBolas();
+            pasos = 6;
+            pasosRestantes.text = "Pasos restantes: " + pasos;
+            niveles.text = "Nivel: " + nivel;
+        }
+        
+        bloqueado = false; // Desbloquea los clics
+    }
+
+    IEnumerator RutinaPerder()
+    {
+        bloqueado = true; // Bloquea los clics
+        yield return StartCoroutine(MostrarImagenTiempoLimitado(imagenMal, 1f));
+        
+        // TU CÓDIGO ORIGINAL INTACTO:
+        restartCounter++;
+        nivel = 1;
+        for (int i = 0; i < posicionesActuales.Length; i++)
+        {
+            posicionesActuales[i] = mapaNiveles[nivel][i];
+        }
+        pasos = 6;
+        pasosRestantes.text = "Pasos restantes: " + pasos;
+        niveles.text = "Nivel: " + nivel;
+        ColocarBolas();
+        
+        bloqueado = false; // Desbloquea los clics
+        if(restartCounter == 3)
+        {
+            Invoke("MostrarPopUpGanadoConRetraso", 0.3f);
+        }
     }
 }

@@ -240,6 +240,30 @@ public class UserManager : MonoBehaviour
         }
     }
 
+    public void LoginAsync(string username, string password, Action<bool> onComplete)
+    {
+        if (isWebGL)
+        {
+            StartCoroutine(LoginToServer(username, password, onComplete));
+            return;
+        }
+
+        bool success = Login(username, password);
+        onComplete?.Invoke(success);
+    }
+
+    public void RegisterAsync(string username, string password, Action<bool> onComplete)
+    {
+        if (isWebGL)
+        {
+            StartCoroutine(RegisterToServer(username, password, onComplete));
+            return;
+        }
+
+        bool success = Register(username, password);
+        onComplete?.Invoke(success);
+    }
+
     public bool ChangePassword(string username, string newPassword)
     {
         PrintDebug("🔐 Cambio de contraseña: " + username);
@@ -416,7 +440,7 @@ public class UserManager : MonoBehaviour
     }
 
     // Coroutines para servidor
-    private IEnumerator RegisterToServer(string username, string password)
+    private IEnumerator RegisterToServer(string username, string password, Action<bool> onComplete = null)
     {
         // Crear usuario con todos los campos inicializados
         User newUser = new User();
@@ -455,15 +479,17 @@ public class UserManager : MonoBehaviour
                 PrintDebug("✓ Usuario agregado a BD local");
                 
                 yield return StartCoroutine(LoadUsersFromServer());
+                onComplete?.Invoke(true);
             }
             else
             {
                 PrintDebug("❌ Error en registro: " + request.error);
+                onComplete?.Invoke(false);
             }
         }
     }
 
-    private IEnumerator LoginToServer(string username, string password)
+    private IEnumerator LoginToServer(string username, string password, Action<bool> onComplete = null)
     {
         WWWForm form = new WWWForm();
         form.AddField("username", username);
@@ -476,11 +502,14 @@ public class UserManager : MonoBehaviour
             if (request.result == UnityWebRequest.Result.Success)
             {
                 PlayerPrefs.SetString("UsuarioLogueado", username);
+                yield return StartCoroutine(LoadUsersFromServer());
                 PrintDebug("✓ LOGIN EXITOSO");
+                onComplete?.Invoke(true);
             }
             else
             {
                 PrintDebug("❌ Login fallido: " + request.error);
+                onComplete?.Invoke(false);
             }
         }
     }

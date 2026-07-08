@@ -108,26 +108,37 @@ public class ManejoLogin : MonoBehaviour
             return;
         }
 
-        if (userManager.Login(username, password))
+        loginButton.interactable = false;
+        registerButton.interactable = false;
+        forgotButton.interactable = false;
+
+        userManager.LoginAsync(username, password, success =>
         {
-            ShowFeedback("Cargando juego...");
-            // Guardar el nombre de usuario y establecer el booleano a verdadero
-            PlayerPrefs.SetString("UsuarioLogueado", username);
-            PlayerPrefs.SetInt("EstaLogueado", 1);
-            
-            // Sincronizar la puntuación del usuario
-            if (TotalStarsCounter.instance != null)
+            loginButton.interactable = true;
+            registerButton.interactable = true;
+            forgotButton.interactable = true;
+
+            if (success)
             {
-                TotalStarsCounter.instance.SincronizarPuntuacionUsuario();
+                ShowFeedback("Cargando juego...");
+                // Guardar el nombre de usuario y establecer el booleano a verdadero
+                PlayerPrefs.SetString("UsuarioLogueado", username);
+                PlayerPrefs.SetInt("EstaLogueado", 1);
+                
+                // Sincronizar la puntuación del usuario
+                if (TotalStarsCounter.instance != null)
+                {
+                    TotalStarsCounter.instance.SincronizarPuntuacionUsuario();
+                }
+                
+                // Cambio de escena al menú principal después del login exitoso
+                SceneManager.LoadScene("MenuInicial");
             }
-            
-            // Cambio de escena al menú principal después del login exitoso
-            SceneManager.LoadScene("MenuInicial"); 
-        }
-        else
-        {
-            ShowFeedback("Usuario o contraseña incorrectos.");
-        }
+            else
+            {
+                ShowFeedback("Usuario o contraseña incorrectos.");
+            }
+        });
     }
 
     void OnRegisterClicked()
@@ -164,32 +175,41 @@ public class ManejoLogin : MonoBehaviour
             return;
         }
 
-        bool success = userManager.Register(username, password);
+        loginButton.interactable = false;
+        registerButton.interactable = false;
+        forgotButton.interactable = false;
 
-        if (success)
+        userManager.RegisterAsync(username, password, success =>
         {
-            ShowFeedback("Usuario registrado correctamente.");
-            
-            // Restaurar la vista original
-            isRegisterMode = false;
-            loginButton.gameObject.SetActive(true);
-            forgotButton.gameObject.SetActive(true);
-            loginButton.transform.localPosition = loginButtonOriginalPos;
-            registerButton.transform.localPosition = registerButtonOriginalPos;
-            
-            // Restaurar el título
-            if (titleText != null)
-                titleText.text = "Iniciar sesión";
-            
-            // Limpiar campos
-            usernameInput.text = "";
-            passwordInput.text = "";
-            ShowFeedback("Ahora puedes iniciar sesión.");
-        }
-        else
-        {
-            ShowFeedback("El usuario ya existe.");
-        }
+            loginButton.interactable = true;
+            registerButton.interactable = true;
+            forgotButton.interactable = true;
+
+            if (success)
+            {
+                ShowFeedback("Usuario registrado correctamente.");
+                
+                // Restaurar la vista original
+                isRegisterMode = false;
+                loginButton.gameObject.SetActive(true);
+                forgotButton.gameObject.SetActive(true);
+                loginButton.transform.localPosition = loginButtonOriginalPos;
+                registerButton.transform.localPosition = registerButtonOriginalPos;
+                
+                // Restaurar el título
+                if (titleText != null)
+                    titleText.text = "Iniciar sesión";
+                
+                // Limpiar campos
+                usernameInput.text = "";
+                passwordInput.text = "";
+                ShowFeedback("Ahora puedes iniciar sesión.");
+            }
+            else
+            {
+                ShowFeedback("El usuario ya existe.");
+            }
+        });
     }
 
     void OnForgotPasswordClicked()
