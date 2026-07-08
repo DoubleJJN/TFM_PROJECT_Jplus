@@ -12,12 +12,13 @@ public class PopUpGanar : MonoBehaviour
     static int totalStars=3;
     public GameObject[] stars = new GameObject[totalStars];
     public TextMeshProUGUI mensaje;
-    private TotalStarsCounter totalStarsCounter;
+    private UserManager userManager;
     private string nombreJuegoActual;
     
     //public MoverRana resetear;
     void Start(){
         btnSalir.onClick.AddListener(Salir);
+        userManager = FindFirstObjectByType<UserManager>();
         for(int i=0; i<totalStars; i++)
             stars[i] = GameObject.Find("Star"+(i+1));
     }
@@ -89,10 +90,25 @@ public class PopUpGanar : MonoBehaviour
             UnityEngine.Debug.Log("Ocultando todas");
         }
 
-        // Enviar las estrellas al contador total
+        // Guardar las estrellas directamente en el usuario actual
         // (Solo si no es TresEnRaya, que ya lo hace desde BotonPrueba())
-        if (nombreJuegoActual != "TresEnRaya" && TotalStarsCounter.instance != null)
-            TotalStarsCounter.instance.AgregarEstrellas(estrellasConseguidas, nombreJuegoActual);
+        if (nombreJuegoActual != "TresEnRaya")
+        {
+            if (userManager == null)
+                userManager = FindFirstObjectByType<UserManager>();
+
+            if (userManager != null)
+            {
+                string usuarioActual = userManager.GetCurrentUser();
+                if (!string.IsNullOrEmpty(usuarioActual))
+                {
+                    userManager.UpdateGameScore(usuarioActual, nombreJuegoActual, estrellasConseguidas);
+                }
+            }
+
+            if (TotalStarsCounter.instance != null)
+                TotalStarsCounter.instance.SincronizarPuntuacionUsuario();
+        }
     }
 
     private int CalcularEstrellas(int restartCounter)

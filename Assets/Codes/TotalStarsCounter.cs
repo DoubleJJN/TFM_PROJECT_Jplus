@@ -20,8 +20,6 @@ public class TotalStarsCounter : MonoBehaviour
         if (instance == null)
         {
             instance = this;
-            // ¡MAGIA 1!: Solo nos protegemos a nosotros mismos, no al Canvas entero
-            DontDestroyOnLoad(gameObject); 
         }
         else
         {
