@@ -278,7 +278,7 @@ public class UserManager : MonoBehaviour
         {
             if (user.username == username)
             {
-                user.password = newPassword;
+                user.password = HashPassword(newPassword);
                 SaveUsers();
                 PrintDebug("✓ Contraseña actualizada para: " + username);
                 return true;
