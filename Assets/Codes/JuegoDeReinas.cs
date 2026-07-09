@@ -137,6 +137,18 @@ public class JuegoDeReinas : MonoBehaviour// hay muchas cosas que arreglar de es
         }
     }
 
+    public void SetValor(bool valor, bool restart )
+    {
+        SetValor(valor);
+        if (restart)
+        {
+            restartCounter = 0;
+            combinacionesPosibles = 3;
+            mapaDeRepeticiones.Clear();
+            combosRestantes.text = "Combos restantes: " + combinacionesPosibles;
+        }
+    }
+
     bool comprobarTablero(){
         Debug.Log("comprobando tablero"+ comprobarFila() +"&&" +comprobarColumna()+ "&&"+ comprobarDiagonal1()+ "&&" +comprobarDiagonal2());
         return comprobarFila() && comprobarColumna() && comprobarDiagonal1() && comprobarDiagonal2();

@@ -48,7 +48,7 @@ public class GameSetting : MonoBehaviour
         if(sceneName == "GameOrdenar")
             resetearOrdenar.SetValor(true);
         if(sceneName == "GameAjedrez")
-            resetearAjedrez.SetValor(true);
+            resetearAjedrez.SetValor(true, true);
         if(sceneName == "GameAnimales")
             resetearAnimales.SetValor(true);
         if(sceneName == "GameRutina")
@@ -72,7 +72,7 @@ public class GameSetting : MonoBehaviour
         if (sceneName == "GameOrdenar")
             resetearOrdenar.SetValor(true);
         if (sceneName == "GameAjedrez")
-            resetearAjedrez.SetValor(true);
+            resetearAjedrez.SetValor(true, true);
         if (sceneName == "GameAnimales")
             resetearAnimales.SetValor(true);
         if(sceneName == "GameRutina")
