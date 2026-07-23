@@ -9,7 +9,7 @@ public class ControlBotones : MonoBehaviour
 {
     public Button jugar;
     public Button ayuda;
-    public Button salir;
+    //public Button salir;
     public GameObject popUpAntesJugar;
     public Button btnOkPopUp;
     
@@ -17,10 +17,10 @@ public class ControlBotones : MonoBehaviour
     {
         jugar = GameObject.Find("Jugar").GetComponent<Button>();
         ayuda = GameObject.Find("Acerca de").GetComponent<Button>();
-        salir = GameObject.Find("Salir").GetComponent<Button>();
+        //salir = GameObject.Find("Salir").GetComponent<Button>();
         jugar.onClick.AddListener(Jugar);
         ayuda.onClick.AddListener(Ayuda);
-        salir.onClick.AddListener(Salir);
+        //salir.onClick.AddListener(Salir);
         
         // Asignar el botón Ok del popUp
         if (btnOkPopUp != null)
@@ -48,7 +48,7 @@ public class ControlBotones : MonoBehaviour
         }
     }
     void Ayuda(){ SceneManager.LoadScene("MenuAyuda"); }
-    void Salir()
+    /*void Salir()
     {
         #if UNITY_EDITOR
             // Si estamos en el editor de Unity
@@ -57,7 +57,7 @@ public class ControlBotones : MonoBehaviour
             // Si estamos en una build del juego
             Application.Quit();
         #endif 
-    }
+    }*/
 
     void OcultarPopUp()
     {

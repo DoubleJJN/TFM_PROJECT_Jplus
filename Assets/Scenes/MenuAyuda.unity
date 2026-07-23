@@ -694,18 +694,11 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\xA1Bienvenido a Project J+!\n\nProject J+ es una versi\xF3n ampliada
-    y mejorada de Project J, desarrollada para ofrecer una experiencia de aprendizaje
-    m\xE1s completa, accesible y divertida.\n\nEsta aplicaci\xF3n incorpora nuevos
-    juegos, m\xE1s funcionalidades y mejoras en la interfaz, con el objetivo de ayudar
-    a desarrollar el pensamiento computacional y otras habilidades cognitivas mediante
-    actividades interactivas.\n\nAdem\xE1s, Project J+ ha sido dise\xF1ado prestando
-    especial atenci\xF3n a la accesibilidad y la usabilidad para ni\xF1os con neurodivergencias,
-    ofreciendo un entorno sencillo, intuitivo y adaptado a sus necesidades de aprendizaje.\n\nA
-    trav\xE9s de diferentes retos y niveles, los jugadores podr\xE1n trabajar habilidades
-    como la l\xF3gica, la resoluci\xF3n de problemas, la memoria, la atenci\xF3n,
-    el reconocimiento de patrones y conceptos b\xE1sicos relacionados con la inform\xE1tica.\n\n\xA1Aprende,
-    juega y supera todos los desaf\xEDos de Project J+!"
+  m_text: "\xA1Bienvenido a Project J+!\n\n\xBFPreparado para aprender mientras juegas?\n\nEn
+    esta aventura encontrar\xE1s diferentes juegos llenos de retos y niveles. Cada
+    uno te ayudar\xE1 a pensar, resolver problemas y descubrir nuevas formas de aprender.\n\n\xA1Divi\xE9rtete,
+    supera todos los desaf\xEDos y convi\xE9rtete en un gran explorador del pensamiento
+    computacional!"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -732,7 +725,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 11.65
+  m_fontSize: 18.8
   m_fontSizeBase: 50
   m_fontWeight: 400
   m_enableAutoSizing: 1

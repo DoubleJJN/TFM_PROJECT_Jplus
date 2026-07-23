@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using System.Collections.Generic;
+using System.Collections;
 using System.IO;
 using TMPro;
 using UnityEngine.Networking;
@@ -32,8 +33,7 @@ public class JuegoDeTresEnRaya : MonoBehaviour
     private User usuarioActualObj = null;
     private User usuarioRivalObj = null;
     // aquí lo manejo yo
-    public TextMeshProUGUI yo, rival, ronda;
-
+    public TextMeshProUGUI yo, rival, ronda, noExiste;
     public Button[] cuadros = new Button[9];
     int[] estadoCuadros = new int[9];//0 vacio, 1 X, 2 O
     
@@ -128,11 +128,19 @@ public class JuegoDeTresEnRaya : MonoBehaviour
         
         Debug.Log("═══ JUEGO LISTO ═══");
     }
-    
+    void ShowFeedback(string message)
+    {
+        noExiste.text = message;
+        StartCoroutine(ClearFeedbackAfterDelay());
+    }
+
+    IEnumerator ClearFeedbackAfterDelay()
+    {
+        yield return new WaitForSeconds(2f);
+        noExiste.text = "";
+    }
     private void ValidarRival()
     {
-        Debug.Log("🔵 ValidarRival() llamado");
-        
         if (inputRivalUsername == null)
         {
             Debug.LogError("❌ InputField es NULL");
@@ -202,6 +210,7 @@ public class JuegoDeTresEnRaya : MonoBehaviour
         else
         {
             Debug.LogWarning("❌ Usuario rival no encontrado: " + nombreRival);
+            ShowFeedback("No existe este usuario");
         }
     }
     

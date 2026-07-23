@@ -42,13 +42,15 @@ public class JuegoDeRutina : MonoBehaviour
         new int[][]
         {
             new int[] { 4, 1, 0, 3 },  // Preparar → Duchar → Cepillar → Dormir
-            new int[] { 1, 0, 4, 3 }   // Duchar → Cepillar → Preparar → Dormir
+            new int[] { 1, 0, 4, 3 },   // Duchar → Cepillar → Preparar → Dormir
+            new int[] { 0, 1, 4, 3 } //cepillar, duchar, preparar, dormir
         },
         // Nivel 3: Dos respuestas correctas
         new int[][]
         {
             new int[] { 3, 4, 0, 1, 2 },  // Despertar → Desayunar → Cepillar → Cambiar ropa → Salir
-            new int[] { 3, 4, 1, 0, 2 }   // Despertar → Desayunar → Cambiar ropa → Cepillar → Salir
+            new int[] { 3, 4, 1, 0, 2 },   // Despertar → Desayunar → Cambiar ropa → Cepillar → Salir
+            new int[] { 3, 1, 4, 0, 2 } // Despertar, cambiar,  desayunar, cepillar, salir
         }
     };
     
