@@ -328,8 +328,30 @@ public class UserManager : MonoBehaviour
             else
             {
                 // En Desktop: guardar en archivo
-                string json = JsonUtility.ToJson(database, true);
-                bool guardado = false;
+                string usuarioActual = GetCurrentUser();
+                User usuario = GetUser(usuarioActual);
+                if (usuario != null)
+                {
+                    // Primero lee el archivo actual
+                    string json = File.ReadAllText(filePath);
+                    UserDatabase fileDatabase = JsonUtility.FromJson<UserDatabase>(json);
+                    
+                    // Busca y actualiza solo el usuario logueado
+                    foreach (User u in fileDatabase.users)
+                    {
+                        if (u.username == usuarioActual)
+                        {
+                            u.puntuacion = usuario.puntuacion;
+                            u.ranasScore = usuario.ranasScore;
+                            // ... copiar todos los campos ...
+                            break;
+                        }
+                    }
+                    
+                    // Guarda todo el archivo (pero solo cambió 1 usuario)
+                    string jsonOut = JsonUtility.ToJson(fileDatabase, true);
+                    File.WriteAllText(filePath, jsonOut);
+                }
                 
                 // PRIMARY: Guardar a filePath (donde podemos escribir)
                 try
