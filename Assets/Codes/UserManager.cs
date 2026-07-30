@@ -314,10 +314,15 @@ public class UserManager : MonoBehaviour
 
             if (isWebGL)
             {
-                // En WebGL: guardar enviando todos los usuarios al servidor
-                foreach (User user in database.users)
+                // En WebGL: guardar SOLO el usuario logueado (el único que cambia)
+                string usuarioActual = GetCurrentUser();
+                if (!string.IsNullOrEmpty(usuarioActual))
                 {
-                    StartCoroutine(SaveUserToServer(user));
+                    User usuario = GetUser(usuarioActual);
+                    if (usuario != null)
+                    {
+                        StartCoroutine(SaveUserToServer(usuario));
+                    }
                 }
             }
             else
