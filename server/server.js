@@ -176,12 +176,38 @@ app.post('/api/save-all-scores', (req, res) => {
     }
 });
 
-// Servir archivos estáticos (el build de WebGL)
-app.use(express.static(path.join(__dirname, '../Build')));
+// Servir archivos estáticos del build WebGL (descomprimiendo .br automáticamente)
+app.use((req, res) => {
+    let filePath = path.join(__dirname, '../Web', req.path);
 
-// Ruta raíz
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, '../Build/index.html'));
+    // Si la ruta termina en /, servir index.html
+    if (req.path.endsWith('/')) {
+        filePath = path.join(__dirname, '../Web/index.html');
+    }
+
+    // Si el archivo no existe, devolver 404
+    if (!fs.existsSync(filePath)) {
+        return res.status(404).send('Not found');
+    }
+
+    // Si el archivo termina en .br, descomprimirlo y servir el contenido
+    if (filePath.endsWith('.br')) {
+        const zlib = require('zlib');
+        const compressed = fs.readFileSync(filePath);
+        const decompressed = zlib.brotliDecompressSync(compressed);
+        const ext = path.extname(filePath.slice(0, -3));
+        const mimeTypes = {
+            '.wasm': 'application/wasm',
+            '.js': 'application/javascript',
+            '.data': 'application/octet-stream',
+            '.html': 'text/html',
+        };
+        res.set('Content-Type', mimeTypes[ext] || 'application/octet-stream');
+        return res.send(decompressed);
+    }
+
+    // Archivo sin compresión, servir directamente
+    res.sendFile(filePath);
 });
 
 // Iniciar servidor
