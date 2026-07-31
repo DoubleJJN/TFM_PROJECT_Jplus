@@ -575,6 +575,22 @@
       "puzzleScore": 2,
       "animalesScore": 3,
       "rutinaScore": 3
+    },
+    {
+      "username": "saray",
+      "password": "7b9528898599c458950acfde927238736c066990a018f4fc68937c92d6e365e2",
+      "nivel": 1,
+      "puntuacion": 0,
+      "ranasScore": 0,
+      "bolasScore": 0,
+      "mochilaScore": 0,
+      "laberintoScore": 0,
+      "quizScore": 0,
+      "reinaScore": 0,
+      "tresEnRayaScore": 0,
+      "puzzleScore": 0,
+      "animalesScore": 0,
+      "rutinaScore": 0
     }
   ]
 }

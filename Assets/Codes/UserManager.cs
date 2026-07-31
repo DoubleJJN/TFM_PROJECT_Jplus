@@ -343,7 +343,15 @@ public class UserManager : MonoBehaviour
                         {
                             u.puntuacion = usuario.puntuacion;
                             u.ranasScore = usuario.ranasScore;
-                            // ... copiar todos los campos ...
+                            u.bolasScore = usuario.bolasScore;
+                            u.mochilaScore = usuario.mochilaScore;
+                            u.laberintoScore = usuario.laberintoScore;
+                            u.quizScore = usuario.quizScore;
+                            u.reinaScore = usuario.reinaScore;
+                            u.tresEnRayaScore = usuario.tresEnRayaScore;
+                            u.puzzleScore = usuario.puzzleScore;
+                            u.animalesScore = usuario.animalesScore;
+                            u.rutinaScore = usuario.rutinaScore;
                             break;
                         }
                     }
@@ -351,20 +359,13 @@ public class UserManager : MonoBehaviour
                     // Guarda todo el archivo (pero solo cambió 1 usuario)
                     string jsonOut = JsonUtility.ToJson(fileDatabase, true);
                     File.WriteAllText(filePath, jsonOut);
-                }
-                
-                // PRIMARY: Guardar a filePath (donde podemos escribir)
-                try
-                {
-                    File.WriteAllText(filePath, json);
-                    guardado = true;
                     
                     // BONUS en EDITOR: copiar a StreamingAssets para que veas los cambios
                     #if UNITY_EDITOR
                     try
                     {
                         string streamingPath = Path.Combine(Application.streamingAssetsPath, "users.json");
-                        File.WriteAllText(streamingPath, json);
+                        File.WriteAllText(streamingPath, jsonOut);
                         UnityEditor.AssetDatabase.Refresh();
                     }
                     catch (System.Exception copyErr)
@@ -372,26 +373,6 @@ public class UserManager : MonoBehaviour
                         // Silent fail - StreamingAssets copy is optional
                     }
                     #endif
-                }
-                catch (System.Exception e1)
-                {
-                    Debug.LogError("❌ Error al escribir en filePath: " + e1.Message);
-                    
-                    // FALLBACK: Si falla filePath, intenta fallbackPath
-                    try
-                    {
-                        File.WriteAllText(fallbackPath, json);
-                        guardado = true;
-                    }
-                    catch (System.Exception e2)
-                    {
-                        Debug.LogError("❌ Error en ambas rutas: " + e2.Message);
-                    }
-                }
-                
-                if (!guardado)
-                {
-                    Debug.LogError("❌ No se pudo guardar usuarios en ninguna ubicación");
                 }
             }
         }
@@ -403,13 +384,6 @@ public class UserManager : MonoBehaviour
 
     private IEnumerator SaveUserToServer(User user)
     {
-        // Asegurar que el usuario tenga todos los campos
-        if (user.ranasScore == 0 && user.bolasScore == 0 && user.mochilaScore == 0 &&
-            user.laberintoScore == 0 && user.quizScore == 0 && user.reinaScore == 0)
-        {
-            // OK, están inicializados
-        }
-        
         // Crear un JSON con los datos del usuario
         string jsonData = JsonUtility.ToJson(user, false);
         
@@ -456,7 +430,7 @@ public class UserManager : MonoBehaviour
             else
             {
                 database = new UserDatabase();
-                PrintDebug("ℹ️ localStorage vacío, base de datos nueva");
+                PrintDebug(" localStorage vacío, base de datos nueva");
             }
         }
         catch (System.Exception e)
