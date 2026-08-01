@@ -2270,7 +2270,7 @@ MonoBehaviour:
   btnReiniciar: {fileID: 0}
   btnCancelar: {fileID: 5696122}
   btnSalir: {fileID: 1996310189}
-  CerrarSesion: {fileID: 5696122}
+  CerrarSesion: {fileID: 0}
 --- !u!4 &932676302
 Transform:
   m_ObjectHideFlags: 0
