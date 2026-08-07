@@ -33,10 +33,10 @@ public class UserManager : MonoBehaviour
         // Detectar si estamos en WebGL
         #if UNITY_WEBGL && !UNITY_EDITOR
         isWebGL = true;
-        PrintDebug("🌐 MODO WebGL detectado");
+        PrintDebug("MODO WebGL detectado");
         #else
         isWebGL = false;
-        PrintDebug("💻 MODO Desktop detectado");
+        PrintDebug("MODO Desktop detectado");
         #endif
 
         // CONFIGURAR URL DEL SERVIDOR
@@ -64,7 +64,7 @@ public class UserManager : MonoBehaviour
         serverURL = "http://localhost:3002/api";
         #endif
         
-        PrintDebug("📡 URL Servidor: " + serverURL);
+        PrintDebug("URL Servidor: " + serverURL);
 
         // Inicializar database
         if (database == null)
@@ -91,12 +91,12 @@ public class UserManager : MonoBehaviour
         #endif
         
         PrintDebug("═══ INICIANDO USERMANAGER ═══");
-        PrintDebug("📂 Ruta GUARDAR: " + filePath);
-        PrintDebug("📂 Ruta LEER: " + fallbackPath);
+        PrintDebug("Ruta GUARDAR: " + filePath);
+        PrintDebug("Ruta LEER: " + fallbackPath);
 
         if (isWebGL)
         {
-            PrintDebug("🌐 Cargando datos del servidor...");
+            PrintDebug("Cargando datos del servidor...");
             StartCoroutine(LoadUsersFromServer());
         }
         else
@@ -104,12 +104,12 @@ public class UserManager : MonoBehaviour
             // Desktop: carga desde fallbackPath (StreamingAssets)
             if (File.Exists(fallbackPath))
             {
-                PrintDebug("✓ Cargando usuarios desde StreamingAssets");
+                PrintDebug("Cargando usuarios desde StreamingAssets");
                 LoadUsers(fallbackPath);
             }
             else
             {
-                PrintDebug("❌ Archivo de usuarios no encontrado");
+                PrintDebug("Archivo de usuarios no encontrado");
                 database = new UserDatabase();
             }
             
@@ -117,7 +117,7 @@ public class UserManager : MonoBehaviour
             #if !UNITY_EDITOR
             if (File.Exists(filePath) && filePath != fallbackPath)
             {
-                PrintDebug("✓ Encontrado archivo guardado, cargando cambios...");
+                PrintDebug("Encontrado archivo guardado, cargando cambios...");
                 try
                 {
                     string json = File.ReadAllText(filePath);
@@ -143,12 +143,12 @@ public class UserManager : MonoBehaviour
                                 }
                             }
                         }
-                        PrintDebug("✓ Puntuaciones actualizadas desde archivo guardado");
+                        PrintDebug("Puntuaciones actualizadas desde archivo guardado");
                     }
                 }
                 catch (System.Exception e)
                 {
-                    PrintDebug("⚠️ Error al cargar cambios guardados: " + e.Message);
+                    PrintDebug("Error al cargar cambios guardados: " + e.Message);
                 }
             }
             #endif
@@ -159,7 +159,7 @@ public class UserManager : MonoBehaviour
 
     public bool Register(string username, string password)
     {
-        PrintDebug("\n👤 REGISTRANDO: " + username);
+        PrintDebug("\nREGISTRANDO: " + username);
         
         if (isWebGL)
         {
@@ -172,7 +172,7 @@ public class UserManager : MonoBehaviour
             // En Desktop: guardar localmente
             if (UserExists(username))
             {
-                PrintDebug("❌ Usuario ya existe");
+                PrintDebug("Usuario ya existe");
                 return false;
             }
 
@@ -198,17 +198,17 @@ public class UserManager : MonoBehaviour
             newUser.reinaScore = 0;
 
             database.users.Add(newUser);
-            PrintDebug("✓ Agregado a lista. Total: " + database.users.Count);
+            PrintDebug("Agregado a lista. Total: " + database.users.Count);
             
             SaveUsers();
-            PrintDebug("✓✓ USUARIO REGISTRADO EXITOSAMENTE\n");
+            PrintDebug("USUARIO REGISTRADO EXITOSAMENTE\n");
             return true;
         }
     }
 
     public bool Login(string username, string password)
     {
-        PrintDebug("🔑 Login intento: " + username);
+        PrintDebug("Login intento: " + username);
         
         if (isWebGL)
         {
@@ -221,7 +221,7 @@ public class UserManager : MonoBehaviour
             // En Desktop: verificar localmente
             if (database == null || database.users == null)
             {
-                PrintDebug("❌ Database es null");
+                PrintDebug("Database es null");
                 return false;
             }
 
@@ -231,11 +231,11 @@ public class UserManager : MonoBehaviour
                 if (user.username == username && user.password == hashedPassword)
                 {
                     PlayerPrefs.SetString("UsuarioLogueado", username);
-                    PrintDebug("✓ LOGIN EXITOSO");
+                    PrintDebug("LOGIN EXITOSO");
                     return true;
                 }
             }
-            PrintDebug("❌ Credenciales incorrectas");
+            PrintDebug("Credenciales incorrectas");
             return false;
         }
     }
@@ -266,11 +266,11 @@ public class UserManager : MonoBehaviour
 
     public bool ChangePassword(string username, string newPassword)
     {
-        PrintDebug("🔐 Cambio de contraseña: " + username);
+        PrintDebug("Cambio de contraseña: " + username);
         
         if (database == null || database.users == null)
         {
-            PrintDebug("❌ Database es null");
+            PrintDebug("Database es null");
             return false;
         }
 
@@ -284,7 +284,7 @@ public class UserManager : MonoBehaviour
                 return true;
             }
         }
-        PrintDebug("❌ Usuario no encontrado");
+        PrintDebug("Usuario no encontrado");
         return false;
     }
 
@@ -378,7 +378,7 @@ public class UserManager : MonoBehaviour
         }
         catch (System.Exception e)
         {
-            Debug.LogError("❌ Error al guardar: " + e.Message);
+            Debug.LogError("Error al guardar: " + e.Message);
         }
     }
 
@@ -398,11 +398,11 @@ public class UserManager : MonoBehaviour
             
             if (request.result == UnityWebRequest.Result.Success)
             {
-                PrintDebug("✓ Usuario guardado en servidor: " + user.username);
+                PrintDebug("Usuario guardado en servidor: " + user.username);
             }
             else
             {
-                PrintDebug("❌ Error guardando usuario en servidor: " + request.error);
+                PrintDebug("Error guardando usuario en servidor: " + request.error);
             }
         }
     }
@@ -425,7 +425,7 @@ public class UserManager : MonoBehaviour
                     database.users = new List<User>();
                 }
                 
-                PrintDebug("✓ Cargados " + database.users.Count + " usuarios desde localStorage");
+                PrintDebug("Cargados " + database.users.Count + " usuarios desde localStorage");
             }
             else
             {
@@ -435,7 +435,7 @@ public class UserManager : MonoBehaviour
         }
         catch (System.Exception e)
         {
-            PrintDebug("❌ Error al cargar de localStorage: " + e.Message);
+            PrintDebug("Error al cargar de localStorage: " + e.Message);
             database = new UserDatabase();
         }
     }
@@ -469,7 +469,7 @@ public class UserManager : MonoBehaviour
 
             if (request.result == UnityWebRequest.Result.Success)
             {
-                PrintDebug("✓ Registrado en servidor");
+                PrintDebug("Registrado en servidor");
                 // Agregar el usuario a la BD en memoria
                 if (database == null)
                     database = new UserDatabase();
@@ -477,14 +477,14 @@ public class UserManager : MonoBehaviour
                     database.users = new List<User>();
                 
                 database.users.Add(newUser);
-                PrintDebug("✓ Usuario agregado a BD local");
+                PrintDebug("Usuario agregado a BD local");
                 
                 yield return StartCoroutine(LoadUsersFromServer());
                 onComplete?.Invoke(true);
             }
             else
             {
-                PrintDebug("❌ Error en registro: " + request.error);
+                PrintDebug("Error en registro: " + request.error);
                 onComplete?.Invoke(false);
             }
         }
@@ -509,7 +509,7 @@ public class UserManager : MonoBehaviour
             }
             else
             {
-                PrintDebug("❌ Login fallido: " + request.error);
+                PrintDebug("Error en login: " + request.error);
                 onComplete?.Invoke(false);
             }
         }
@@ -538,7 +538,7 @@ public class UserManager : MonoBehaviour
                 // Inicializar campos faltantes en usuarios cargados del servidor
                 InitializeAllUserFields();
                 
-                PrintDebug("✓ Cargados " + database.users.Count + " usuarios desde servidor");
+                PrintDebug("Cargados " + database.users.Count + " usuarios desde servidor");
                 PrintDebug("═══ USUARIOS CARGADOS: " + database.users.Count + " ═══\n");
                 
                 // Notificar a TotalStarsCounter que actualice los datos
@@ -550,7 +550,7 @@ public class UserManager : MonoBehaviour
             }
             else
             {
-                PrintDebug("❌ Error cargando usuarios: " + request.error);
+                PrintDebug("Error cargando usuarios: " + request.error);
                 database = new UserDatabase();
             }
         }
@@ -577,17 +577,17 @@ public class UserManager : MonoBehaviour
                 // Inicializar campos faltantes en usuarios cargados
                 InitializeAllUserFields();
                 
-                PrintDebug("✓ Cargados " + database.users.Count + " usuarios desde: " + ruta);
+                PrintDebug("Cargados " + database.users.Count + " usuarios desde: " + ruta);
             }
             else
             {
-                PrintDebug("❌ Archivo no existe: " + ruta);
+                PrintDebug(" Archivo no existe: " + ruta);
                 database = new UserDatabase();
             }
         }
         catch (System.Exception e)
         {
-            PrintDebug("❌ Error al cargar: " + e.Message);
+            PrintDebug("Error al cargar: " + e.Message);
             database = new UserDatabase();
         }
     }
@@ -597,10 +597,10 @@ public class UserManager : MonoBehaviour
         if (database == null || database.users == null)
             return;
 
-        PrintDebug("🔍 Inicializando " + database.users.Count + " usuarios en BD...");
+        PrintDebug("Inicializando " + database.users.Count + " usuarios en BD...");
         foreach (User user in database.users)
         {
-            PrintDebug("  ✓ Usuario en BD: " + user.username + " | Puntuación: " + user.puntuacion + " | Ranas: " + user.ranasScore);
+            PrintDebug("Usuario en BD: " + user.username + " | Puntuación: " + user.puntuacion + " | Ranas: " + user.ranasScore);
             // Los campos ya están inicializados en 0 por defecto en la clase User
         }
     }
@@ -715,11 +715,11 @@ public class UserManager : MonoBehaviour
             {
                 user.puntuacion = newScore;
                 SaveUsers();
-                PrintDebug("💾 Puntuación guardada para " + username + ": " + newScore);
+                PrintDebug("Puntuación guardada para " + username + ": " + newScore);
                 return;
             }
         }
-        PrintDebug("❌ Usuario no encontrado para actualizar puntuación: " + username);
+        PrintDebug("Usuario no encontrado para actualizar puntuación: " + username);
     }
     
     public string GetCurrentUser()
@@ -749,7 +749,7 @@ public class UserManager : MonoBehaviour
                 return;
             }
         }
-        Debug.LogError("❌ Usuario no encontrado para actualizar juego: " + username);
+        Debug.LogError("Usuario no encontrado para actualizar juego: " + username);
     }
     
     private int ObtenerPuntuacionJuego(User user, string nombreJuego)

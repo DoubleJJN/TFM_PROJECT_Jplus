@@ -39,7 +39,7 @@ function saveUsers(database) {
     try {
         const json = JSON.stringify(database, null, 2);
         fs.writeFileSync(usersFilePath, json, 'utf8');
-        console.log('✓ Users.json guardado');
+        console.log('Users.json guardado');
         return true;
     } catch (error) {
         console.error('Error guardando users.json:', error);
@@ -93,7 +93,7 @@ app.post('/api/register', (req, res) => {
     database.users.push(newUser);
 
     if (saveUsers(database)) {
-        console.log('✓ Usuario registrado: ' + username);
+        console.log('Usuario registrado: ' + username);
         res.json({ success: true, message: 'Usuario registrado exitosamente' });
     } else {
         res.status(500).json({ success: false, message: 'Error al guardar' });
@@ -113,7 +113,7 @@ app.post('/api/login', (req, res) => {
     const user = database.users.find(u => u.username === username && u.password === hashedPassword);
 
     if (user) {
-        console.log('✓ Login exitoso: ' + username);
+        console.log('Login exitoso: ' + username);
         res.json({ success: true, message: 'Login exitoso', user: user });
     } else {
         console.log('✗ Login fallido: ' + username);
@@ -136,7 +136,7 @@ app.post('/api/update-score', (req, res) => {
     if (nivel !== undefined) user.nivel = nivel;
 
     if (saveUsers(database)) {
-        console.log('✓ Puntuación actualizada: ' + username);
+        console.log('Puntuación actualizada: ' + username);
         res.json({ success: true, message: 'Puntuación actualizada' });
     } else {
         res.status(500).json({ success: false, message: 'Error al guardar' });
@@ -169,7 +169,7 @@ app.post('/api/save-all-scores', (req, res) => {
     if (rutinaScore !== undefined) user.rutinaScore = rutinaScore;
 
     if (saveUsers(database)) {
-        console.log('✓ Todos los scores actualizados: ' + username);
+        console.log('Todos los scores actualizados: ' + username);
         res.json({ success: true, message: 'Scores guardados', user: user });
     } else {
         res.status(500).json({ success: false, message: 'Error al guardar' });
@@ -213,8 +213,8 @@ app.use((req, res) => {
 // Iniciar servidor
 app.listen(PORT, () => {
     console.log('═══════════════════════════════════════');
-    console.log('🎮 Servidor TFM Game iniciado');
-    console.log(`📡 Puerto: http://localhost:${PORT}`);
-    console.log(`📁 Users.json: ${usersFilePath}`);
+    console.log(' Servidor TFM Game iniciado');
+    console.log(` Puerto: http://localhost:${PORT}`);
+    console.log(` Users.json: ${usersFilePath}`);
     console.log('═══════════════════════════════════════');
 });

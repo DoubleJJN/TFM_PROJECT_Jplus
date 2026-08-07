@@ -35,9 +35,9 @@ Deberías ver:
 
 ```
 ═══════════════════════════════════════
-🎮 Servidor TFM Game iniciado
-📡 Puerto: http://localhost:3000
-📁 Users.json: C:\...\Assets\StreamingAssets\users.json
+Servidor TFM Game iniciado
+Puerto: http://localhost:3000
+Users.json: C:\...\Assets\StreamingAssets\users.json
 ═══════════════════════════════════════
 ```
 
